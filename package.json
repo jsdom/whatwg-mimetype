@@ -5,7 +5,7 @@
     "content-type",
     "http"
   ],
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Domenic Denicola <d@domenic.me> (https://domenic.me/)",
   "license": "WTFPL",
   "repository": "jsdom/content-type-parser",
