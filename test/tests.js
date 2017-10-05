@@ -140,6 +140,47 @@ describe("application/xhtml+xml", () => {
   });
 });
 
+describe("multipart/form-data;boundary=something", () => {
+  const contentType = contentTypeParser("multipart/form-data;boundary=something");
+
+  it("should set the properties correctly", () => {
+    assert.strictEqual(contentType.type, "multipart");
+    assert.strictEqual(contentType.subtype, "form-data");
+    assert.strictEqual(contentType.parameterList.length, 1);
+  });
+
+  it("should response to the type tests correctly", () => {
+    assert.strictEqual(contentType.isHTML(), false);
+    assert.strictEqual(contentType.isXML(), false);
+    assert.strictEqual(contentType.isText(), false);
+    assert.strictEqual(contentType.isMultipart(), true);
+  });
+
+  it("should serialize correctly", () => {
+    assert.strictEqual(contentType.toString(), "multipart/form-data;boundary=something");
+  });
+
+  it("should respond to sets correctly", () => {
+    contentType.set("boundary", "data");
+    assert.strictEqual(contentType.get("boundary"), "data");
+    assert.strictEqual(contentType.toString(), "multipart/form-data;boundary=data");
+  });
+
+  it("should validate required boundary parameter", () => {
+    assert.strictEqual(contentType.isValid(), true);
+  });
+
+  it("should invalidate if required boundary parameter is missing", () => {
+    const invalidContentType = contentTypeParser("multipart/form-data;something=data");
+    assert.strictEqual(invalidContentType.isValid(), false);
+  });
+
+  it("should invalidate for not supported subtype", () => {
+    const invalidContentType = contentTypeParser("multipart/foo-bar;boundary=data");
+    assert.strictEqual(invalidContentType.isValid(), false);
+  });
+});
+
 const xml = [
   "application/xml",
   "text/xml",
@@ -163,6 +204,7 @@ describe("foo/xml", () => {
   it("should not respond as XML (or HTML)", () => {
     assert.strictEqual(contentType.isHTML(), false);
     assert.strictEqual(contentType.isXML(), false);
+    assert.strictEqual(contentType.isValid(), false);
   });
 });
 

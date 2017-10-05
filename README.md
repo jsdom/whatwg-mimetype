@@ -20,6 +20,9 @@ console.assert(contentType.toString() === "text/html;charset=windows-1252");
 console.assert(contentType.isHTML() === true);
 console.assert(contentType.isXML() === false);
 console.assert(contentType.isText() === true);
+console.assert(contentType.isMultiPart() === false);
+
+console.assert(contentType.isValid() === true);
 ```
 
 Note how parsing will lowercase the type, subtype, and parameter name tokens (but not parameter values).
@@ -50,7 +53,7 @@ Both of these will lowercase the keys.
 - `isHTML()`: returns true if this instance's MIME type is [the HTML MIME type](https://html.spec.whatwg.org/multipage/infrastructure.html#html-mime-type), `"text/html"`
 - `isXML()`: returns true if this instance's MIME type is [an XML MIME type](https://html.spec.whatwg.org/multipage/infrastructure.html#xml-mime-type)
 - `isText()`: returns true if this instance's top-level media type is `"text"`
-
+- `isMultiPart()`: returns true if the instance's top-level media type is `"multipart"`
 ### Serialization
 
 - `toString()` will return a canonicalized representation of the content-type, re-built from the parsed components
