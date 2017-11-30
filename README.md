@@ -1,30 +1,33 @@
-# Parse `Content-Type` Header Strings
+# Parse, serialize, and manipulate MIME types
 
-This package will parse the [`Content-Type`](https://tools.ietf.org/html/rfc7231#section-3.1.1.1) header field into an introspectable data structure, whose parameters can be manipulated:
+This package will parse [MIME types](https://mimesniff.spec.whatwg.org/#understanding-mime-types) into a structured format, which can then be manipulated and serialized:
 
 ```js
-const contentTypeParser = require("content-type-parser");
+const MIMEType = require("content-type-parser");
 
-const contentType = contentTypeParser(`Text/HTML;Charset="utf-8"`);
+const mimeType = new MIMEType(`Text/HTML;Charset="utf-8"`);
 
-console.assert(contentType.toString() === "text/html;charset=utf-8");
+console.assert(mimeType.toString() === "text/html;charset=utf-8");
 
-console.assert(contentType.type === "text");
-console.assert(contentType.subtype === "html");
-console.assert(contentType.get("charset") === "utf-8");
+console.assert(mimeType.type === "text");
+console.assert(mimeType.subtype === "html");
+console.assert(mimeType.essence === "text/html");
+console.assert(mimeType.parameters.get("charset") === "utf-8");
 
-contentType.set("charset", "windows-1252");
-console.assert(contentType.get("charset") === "windows-1252");
-console.assert(contentType.toString() === "text/html;charset=windows-1252");
+mimeType.parameters.set("charset", "windows-1252");
+console.assert(mimeType.parameters.get("charset") === "windows-1252");
+console.assert(mimeType.toString() === "text/html;charset=windows-1252");
 
-console.assert(contentType.isHTML() === true);
-console.assert(contentType.isXML() === false);
-console.assert(contentType.isText() === true);
+console.assert(mimeType.isHTML() === true);
+console.assert(mimeType.isXML() === false);
+console.assert(mimeType.isText() === true);
 ```
 
-Note how parsing will lowercase the type, subtype, and parameter name tokens (but not parameter values).
+Parsing is a fairly complex process; see [the specification](https://mimesniff.spec.whatwg.org/#parsing-a-mime-type) for details (and similarly [for serialization](https://mimesniff.spec.whatwg.org/#serializing-a-mime-type)).
 
-If the passed string cannot be parsed as a content-type, `contentTypeParser` will return `null`.
+If the passed string cannot be parsed as a MIME type, the `MIMEType` constructor will throw.
+
+TODO update the below:
 
 ## `ContentType` instance API
 
