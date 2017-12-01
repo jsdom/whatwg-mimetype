@@ -27,37 +27,70 @@ Parsing is a fairly complex process; see [the specification](https://mimesniff.s
 
 If the passed string cannot be parsed as a MIME type, the `MIMEType` constructor will throw.
 
-TODO update the below:
+## `MIMEType` API
 
-## `ContentType` instance API
-
-This package's main module's default export will return an instance of the `ContentType` class, which has the following public APIs:
+This package's main module's default export is a class, `MIMEType`. Its constructor takes a string which it will attempt to parse into a MIME type; if parsing fails, an `Error` will be thrown.
 
 ### Properties
 
-- `type`: the top-level media type, e.g. `"text"`
-- `subtype`: the subtype, e.g. `"html"`
-- `parameterList`: an array of `{ separator, key, value }` pairs representing the parameters. The `separator` field contains any whitespace, not just the `;` character.
+- `type`: the MIME type's [type](https://mimesniff.spec.whatwg.org/#mime-type-type), e.g. `"text"`
+- `subtype`: the MIME type's [subtype](https://mimesniff.spec.whatwg.org/#mime-type-subtype), e.g. `"html"`
+- `essence`: the MIME type's [essence](https://mimesniff.spec.whatwg.org/#mime-type-essence), e.g. `"text/html"`
+- `parameters`: an instance of `MIMETypeParameters`, containing this MIME type's [parameters](https://mimesniff.spec.whatwg.org/#mime-type-parameters)
 
-### Parameter manipulation
+`type` and `subtype` can be changed. They will be validated to be non-empty and only contain [HTTP token code points](https://mimesniff.spec.whatwg.org/#http-token-code-point).
 
-In general you should not directly manipulate `parameterList`. Instead, use the following APIs:
+`essence` is only a getter, and cannot be changed.
 
-- `get("key")`: returns the value of the parameter with the given key, or `undefined` if no such parameter is present
-- `set("key", "value")`: adds the given key/value pair to the parameter list, or overwrites the existing value if an entry already existed
+`parameters` is also a getter, but the contents of the `MIMETypeParameters` object are mutable, as described below.
 
-Both of these will lowercase the keys.
+### Methods
 
-### MIME type tests
+- `toString({ excludeParameters })` serializes the MIME type to a string, optionally excluding the parameters
+- `isHTML()`: returns true if this instance represents [a HTML MIME type](https://mimesniff.spec.whatwg.org/#html-mime-type)
+- `isXML()`: returns true if this instance represents [an XML MIME type](https://mimesniff.spec.whatwg.org/#xml-mime-type)
+- `isText()`: returns true if this instance's type is `"text"`
 
-- `isHTML()`: returns true if this instance's MIME type is [the HTML MIME type](https://html.spec.whatwg.org/multipage/infrastructure.html#html-mime-type), `"text/html"`
-- `isXML()`: returns true if this instance's MIME type is [an XML MIME type](https://html.spec.whatwg.org/multipage/infrastructure.html#xml-mime-type)
-- `isText()`: returns true if this instance's top-level media type is `"text"`
+## `MIMETypeParameters` API
 
-### Serialization
+The `MIMETypeParameters` class, instances of which are returned by `mimeType.parameters`, has equivalent surface API to a [JavaScript `Map`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map).
 
-- `toString()` will return a canonicalized representation of the content-type, re-built from the parsed components
+However, `MIMETypeParameters` methods will always interpret their arguments as appropriate for MIME types, so e.g. parameter names will be lowercased, and attempting to set invalid characters will throw.
 
-## Credits
+Some examples:
 
-This package was originally based on the excellent work of [@nicolashenry](https://github.com/nicolashenry), [in jsdom](https://github.com/tmpvar/jsdom/blob/16fd85618f2705d181232f6552125872a37164bc/lib/jsdom/living/helpers/headers.js). It has since been pulled out into this separate package.
+```js
+const mimeType = new MIMEType(`x/x;a=b;c=D;E="F"`);
+
+// Logs:
+// a b
+// c D
+// e F
+for (const [name, value] of mimeType.parameters) {
+  console.log(name, value);
+}
+
+console.assert(mimeType.parameters.has("a"));
+console.assert(mimeType.parameters.has("A"));
+console.assert(mimeType.parameters.get("A") === "b");
+
+mimeType.parameters.set("Q", "X");
+console.assert(mimeType.parameters.get("q") === "X");
+console.assert(mimeType.toString() === "x/x;a=b;c=d;e=F;q=X");
+
+// Throws:
+mimeType.parameters.set("@", "x");
+```
+
+## Raw parsing/serialization APIs
+
+If you want primitives on which to build your own API, you can get direct access to the parsing and serialization algorithms as follows:
+
+```js
+const parse = require("content-type-parser/parser");
+const serialize = require("content-type-parser/serialize");
+```
+
+`parse(string)` returns an object containing the `type` and `subtype` strings, plus `parameters`, which is a `Map`. This is roughly our equivalent of the spec's [MIME type record](https://mimesniff.spec.whatwg.org/#mime-type). If parsing fails, it instead returns `null`.
+
+`serialize(record, { excludeParameters })` operates on the such an object, giving back a string. Here `excludeParameters` defaults to false.
