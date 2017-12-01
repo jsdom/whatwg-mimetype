@@ -46,7 +46,7 @@ This package's main module's default export is a class, `MIMEType`. Its construc
 
 ### Methods
 
-- `toString({ excludeParameters })` serializes the MIME type to a string, optionally excluding the parameters
+- `toString()` serializes the MIME type to a string
 - `isHTML()`: returns true if this instance represents [a HTML MIME type](https://mimesniff.spec.whatwg.org/#html-mime-type)
 - `isXML()`: returns true if this instance represents [an XML MIME type](https://mimesniff.spec.whatwg.org/#xml-mime-type)
 - `isText()`: returns true if this instance's type is `"text"`
@@ -93,4 +93,4 @@ const serialize = require("content-type-parser/serialize");
 
 `parse(string)` returns an object containing the `type` and `subtype` strings, plus `parameters`, which is a `Map`. This is roughly our equivalent of the spec's [MIME type record](https://mimesniff.spec.whatwg.org/#mime-type). If parsing fails, it instead returns `null`.
 
-`serialize(record, { excludeParameters })` operates on the such an object, giving back a string. Here `excludeParameters` defaults to false.
+`serialize(record)` operates on the such an object, giving back a string according to the serialization algorithm.
