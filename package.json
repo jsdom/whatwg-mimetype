@@ -24,7 +24,8 @@
   "devDependencies": {
     "eslint": "^4.12.1",
     "jest": "^21.2.1",
-    "request": "^2.83.0"
+    "request": "^2.83.0",
+    "whatwg-encoding": "^1.0.3"
   },
   "jest": {
     "coverageDirectory": "coverage",
@@ -36,8 +37,5 @@
     "testMatch": [
       "<rootDir>/test/**/*.js"
     ]
-  },
-  "dependencies": {
-    "whatwg-encoding": "^1.0.3"
   }
 }
