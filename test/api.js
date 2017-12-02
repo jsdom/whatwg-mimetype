@@ -1,7 +1,7 @@
 "use strict";
 const MIMEType = require("..");
 
-describe("README intro example", () => {
+describe("Smoke tests via README intro example", () => {
   let mimeType;
   beforeEach(() => {
     mimeType = new MIMEType(`Text/HTML;Charset="utf-8"`);
@@ -27,6 +27,24 @@ describe("README intro example", () => {
     mimeType.parameters.set("charset", "windows-1252");
     expect(mimeType.parameters.get("charset")).toEqual("windows-1252");
     expect(mimeType.toString()).toEqual("text/html;charset=windows-1252");
+  });
+});
+
+describe("Constructor behavior", () => {
+  it("converts incoming arguments into strings", () => {
+    const arg = {
+      toString() {
+        return "text/HTML";
+      }
+    };
+    const mimeType = new MIMEType(arg);
+
+    expect(mimeType.toString()).toEqual("text/html");
+  });
+
+  it("throws on unparseable MIME types", () => {
+    expect(() => new MIMEType("asdf")).toThrow();
+    expect(() => new MIMEType("text/html™")).toThrow();
   });
 });
 
@@ -117,5 +135,40 @@ describe("subtype manipulation", () => {
     expect(() => {
       mimeType.subtype = "";
     }).toThrow();
+  });
+});
+
+describe("Group-testing functions", () => {
+  test("isHTML", () => {
+    expect((new MIMEType("text/html")).isHTML()).toBe(true);
+    expect((new MIMEType("text/html;charset=utf-8")).isHTML()).toBe(true);
+    expect((new MIMEType("text/html;charset=utf-8;foo=bar")).isHTML()).toBe(true);
+
+    expect((new MIMEType("text/xhtml")).isHTML()).toBe(false);
+    expect((new MIMEType("application/html")).isHTML()).toBe(false);
+    expect((new MIMEType("application/xhtml+xml")).isHTML()).toBe(false);
+  });
+
+  test("isXML", () => {
+    expect((new MIMEType("application/xml")).isXML()).toBe(true);
+    expect((new MIMEType("application/xml;charset=utf-8")).isXML()).toBe(true);
+    expect((new MIMEType("application/xml;charset=utf-8;foo=bar")).isXML()).toBe(true);
+
+    expect((new MIMEType("text/xml")).isXML()).toBe(true);
+    expect((new MIMEType("text/xml;charset=utf-8")).isXML()).toBe(true);
+    expect((new MIMEType("text/xml;charset=utf-8;foo=bar")).isXML()).toBe(true);
+
+    expect((new MIMEType("text/svg+xml")).isXML()).toBe(true);
+    expect((new MIMEType("text/svg+xml;charset=utf-8")).isXML()).toBe(true);
+    expect((new MIMEType("text/svg+xml;charset=utf-8;foo=bar")).isXML()).toBe(true);
+
+    expect((new MIMEType("application/xhtml+xml")).isXML()).toBe(true);
+    expect((new MIMEType("application/xhtml+xml;charset=utf-8")).isXML()).toBe(true);
+    expect((new MIMEType("application/xhtml+xml;charset=utf-8;foo=bar")).isXML()).toBe(true);
+
+    expect((new MIMEType("text/xhtml")).isXML()).toBe(false);
+    expect((new MIMEType("text/svg")).isXML()).toBe(false);
+    expect((new MIMEType("application/html")).isXML()).toBe(false);
+    expect((new MIMEType("application/xml+xhtml")).isXML()).toBe(false);
   });
 });

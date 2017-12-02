@@ -20,7 +20,6 @@ console.assert(mimeType.toString() === "text/html;charset=windows-1252");
 
 console.assert(mimeType.isHTML() === true);
 console.assert(mimeType.isXML() === false);
-console.assert(mimeType.isText() === true);
 ```
 
 Parsing is a fairly complex process; see [the specification](https://mimesniff.spec.whatwg.org/#parsing-a-mime-type) for details (and similarly [for serialization](https://mimesniff.spec.whatwg.org/#serializing-a-mime-type)).
@@ -49,7 +48,8 @@ This package's main module's default export is a class, `MIMEType`. Its construc
 - `toString()` serializes the MIME type to a string
 - `isHTML()`: returns true if this instance represents [a HTML MIME type](https://mimesniff.spec.whatwg.org/#html-mime-type)
 - `isXML()`: returns true if this instance represents [an XML MIME type](https://mimesniff.spec.whatwg.org/#xml-mime-type)
-- `isText()`: returns true if this instance's type is `"text"`
+
+_Note: the `isHTML()` and `isXML()` methods are speculative, and may be removed or changed in future major versions. See [whatwg/mimesniff#48](https://github.com/whatwg/mimesniff/issues/48) for brainstorming in this area. Currently we implement these mainly because they are useful in jsdom._
 
 ## `MIMETypeParameters` API
 
