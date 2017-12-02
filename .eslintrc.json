@@ -132,7 +132,7 @@
     "no-undef-init": "error",
     "no-undefined": "off",
     "no-unused-vars": "error",
-    "no-use-before-define": ["error", "nofunc"],
+    "no-use-before-define": "off",
 
     // Node.js and CommonJS
     "callback-return": "off",
@@ -265,7 +265,7 @@
     "no-var": "error",
     "object-shorthand": "error",
     "prefer-arrow-callback": "error",
-    "prefer-const": ["error", { "ignoreReadBeforeAssign": true }],
+    "prefer-const": ["error", { "ignoreReadBeforeAssign": true, "destructuring": "all" }],
     "prefer-destructuring": ["error", { "VariableDeclarator": { "array": false, "object": true }, "AssignmentExpression": { "array": false, "object": false } }, { "enforceForRenamedProperties": false }],
     "prefer-numeric-literals": "error",
     "prefer-rest-params": "off",
