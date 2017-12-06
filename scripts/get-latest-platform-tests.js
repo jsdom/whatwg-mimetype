@@ -18,12 +18,15 @@ process.on("unhandledRejection", err => {
 // 1. Go to https://github.com/w3c/web-platform-tests/tree/master/mimesniff
 // 2. Press "y" on your keyboard to get a permalink
 // 3. Copy the commit hash
-const commitHash = "f15f7dbb7253000494657a47360b51676fac0a0f";
+const commitHash = "a4bddb0";
 
-const url = `https://raw.githubusercontent.com/w3c/web-platform-tests/${commitHash}` +
-            `/mimesniff/mime-types/resources/mime-types.json`;
+const urlPrefix = `https://raw.githubusercontent.com/w3c/web-platform-tests/${commitHash}` +
+                  `/mimesniff/mime-types/resources/`;
 
-// Have to use RawGit as JSDOM.fromURL checks Content-Type header.
-const targetFile = path.resolve(__dirname, "..", "test", "web-platform-tests", "mime-types.json");
+const files = ["mime-types.json", "generated-mime-types.json"];
 
-request(url).pipe(fs.createWriteStream(targetFile));
+for (const file of files) {
+  const url = urlPrefix + file;
+  const targetFile = path.resolve(__dirname, "..", "test", "web-platform-tests", file);
+  request(url).pipe(fs.createWriteStream(targetFile));
+}
