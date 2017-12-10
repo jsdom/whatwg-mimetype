@@ -1,16 +1,17 @@
 {
-  "name": "content-type-parser",
-  "description": "Parses and serializes MIME types",
+  "name": "whatwg-mime-type",
+  "description": "Parses, serializes, and manipulates MIME types, according to the WHATWG MIME Sniffing Standard",
   "keywords": [
     "content-type",
     "mime type",
     "mimesniff",
-    "http"
+    "http",
+    "whatwg"
   ],
-  "version": "1.0.2",
+  "version": "2.0.0-pre",
   "author": "Domenic Denicola <d@domenic.me> (https://domenic.me/)",
   "license": "MIT",
-  "repository": "jsdom/content-type-parser",
+  "repository": "jsdom/whatwg-mime-type",
   "main": "lib/mime-type.js",
   "files": [
     "lib/"

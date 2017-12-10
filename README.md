@@ -26,6 +26,8 @@ Parsing is a fairly complex process; see [the specification](https://mimesniff.s
 
 If the passed string cannot be parsed as a MIME type, the `MIMEType` constructor will throw.
 
+This package's algorithms conform to those of the WHATWG [MIME Sniffing Standard](https://mimesniff.spec.whatwg.org/), and is aligned up to commit [cc81ec4](https://github.com/whatwg/mimesniff/commit/cc81ec48288944562c4554069da1d74a71e199fb).
+
 ## `MIMEType` API
 
 This package's main module's default export is a class, `MIMEType`. Its constructor takes a string which it will attempt to parse into a MIME type; if parsing fails, an `Error` will be thrown.
