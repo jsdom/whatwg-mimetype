@@ -1,24 +1,43 @@
 {
-  "name": "content-type-parser",
-  "description": "Parse the value of the Content-Type header",
+  "name": "whatwg-mimetype",
+  "description": "Parses, serializes, and manipulates MIME types, according to the WHATWG MIME Sniffing Standard",
   "keywords": [
     "content-type",
-    "http"
+    "mime type",
+    "mimesniff",
+    "http",
+    "whatwg"
   ],
-  "version": "1.0.2",
+  "version": "2.0.0-pre",
   "author": "Domenic Denicola <d@domenic.me> (https://domenic.me/)",
   "license": "MIT",
-  "repository": "jsdom/content-type-parser",
-  "main": "lib/content-type-parser.js",
+  "repository": "jsdom/whatwg-mimetype",
+  "main": "lib/mime-type.js",
   "files": [
     "lib/"
   ],
   "scripts": {
-    "test": "mocha",
-    "lint": "eslint lib test"
+    "test": "jest",
+    "coverage": "jest --coverage",
+    "lint": "eslint .",
+    "pretest": "node scripts/get-latest-platform-tests.js"
   },
   "devDependencies": {
-    "eslint": "^3.8.0",
-    "mocha": "^3.1.2"
+    "eslint": "^4.12.1",
+    "jest": "^21.2.1",
+    "printable-string": "^0.3.0",
+    "request": "^2.83.0",
+    "whatwg-encoding": "^1.0.3"
+  },
+  "jest": {
+    "coverageDirectory": "coverage",
+    "coverageReporters": [
+      "lcov",
+      "text-summary"
+    ],
+    "testEnvironment": "node",
+    "testMatch": [
+      "<rootDir>/test/**/*.js"
+    ]
   }
 }
