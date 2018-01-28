@@ -171,4 +171,26 @@ describe("Group-testing functions", () => {
     expect((new MIMEType("application/html")).isXML()).toBe(false);
     expect((new MIMEType("application/xml+xhtml")).isXML()).toBe(false);
   });
+
+  test("isJS", () => {
+    expect((new MIMEType("application/ecmascript")).isJS()).toBe(true);
+    expect((new MIMEType("application/javascript")).isJS()).toBe(true);
+    expect((new MIMEType("application/x-ecmascript")).isJS()).toBe(true);
+    expect((new MIMEType("application/x-javascript")).isJS()).toBe(true);
+    expect((new MIMEType("text/ecmascript")).isJS()).toBe(true);
+    expect((new MIMEType("text/javascript1.0")).isJS()).toBe(true);
+    expect((new MIMEType("text/javascript1.1")).isJS()).toBe(true);
+    expect((new MIMEType("text/javascript1.2")).isJS()).toBe(true);
+    expect((new MIMEType("text/javascript1.3")).isJS()).toBe(true);
+    expect((new MIMEType("text/javascript1.4")).isJS()).toBe(true);
+    expect((new MIMEType("text/javascript1.5")).isJS()).toBe(true);
+    expect((new MIMEType("text/jscript")).isJS()).toBe(true);
+    expect((new MIMEType("text/livescript")).isJS()).toBe(true);
+    expect((new MIMEType("text/x-ecmascript")).isJS()).toBe(true);
+    expect((new MIMEType("text/x-javascript")).isJS()).toBe(true);
+
+    expect((new MIMEType("text/javascript;charset=utf-8")).isJS()).toBe(true);
+    expect((new MIMEType("text/javascript;charset=utf-8;goal=script")).isJS()).toBe(true);
+    expect((new MIMEType("text/javascript;goal=module")).isJS()).toBe(true);
+  });
 });
