@@ -30,6 +30,10 @@ This package's algorithms conform to those of the WHATWG [MIME Sniffing Standard
 
 This package's main module's default export is a class, `MIMEType`. Its constructor takes a string which it will attempt to parse into a MIME type; if parsing fails, an `Error` will be thrown.
 
+### The `parse()` static factory method
+
+As an alternative to the constructor, you can use `MIMEType.parse(string)`. The only difference is that `parse()` will return `null` on failed parsing, whereas the constructor will throw. It thus makes the most sense to use the constructor in cases where unparseable MIME types would be exceptional, and use `parse()` when dealing with input from some unconstrained source.
+
 ### Properties
 
 - `type`: the MIME type's [type](https://mimesniff.spec.whatwg.org/#mime-type-type), e.g. `"text"`

@@ -48,6 +48,24 @@ describe("Constructor behavior", () => {
   });
 });
 
+describe("static parse() behavior", () => {
+  it("converts incoming arguments into strings", () => {
+    const arg = {
+      toString() {
+        return "text/HTML";
+      }
+    };
+    const mimeType = MIMEType.parse(arg);
+
+    expect(mimeType.toString()).toEqual("text/html");
+  });
+
+  it("returns null on unparseable MIME types", () => {
+    expect(MIMEType.parse("asdf")).toBe(null);
+    expect(MIMEType.parse("text/html™")).toBe(null);
+  });
+});
+
 describe("type manipulation", () => {
   let mimeType;
   beforeEach(() => {
