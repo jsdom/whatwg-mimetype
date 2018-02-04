@@ -172,34 +172,35 @@ describe("Group-testing functions", () => {
     expect((new MIMEType("application/xml+xhtml")).isXML()).toBe(false);
   });
 
-  test("isJS", () => {
-    expect((new MIMEType("application/ecmascript")).isJS()).toBe(true);
-    expect((new MIMEType("application/javascript")).isJS()).toBe(true);
-    expect((new MIMEType("application/x-ecmascript")).isJS()).toBe(true);
-    expect((new MIMEType("application/x-javascript")).isJS()).toBe(true);
-    expect((new MIMEType("text/ecmascript")).isJS()).toBe(true);
-    expect((new MIMEType("text/javascript1.0")).isJS()).toBe(true);
-    expect((new MIMEType("text/javascript1.1")).isJS()).toBe(true);
-    expect((new MIMEType("text/javascript1.2")).isJS()).toBe(true);
-    expect((new MIMEType("text/javascript1.3")).isJS()).toBe(true);
-    expect((new MIMEType("text/javascript1.4")).isJS()).toBe(true);
-    expect((new MIMEType("text/javascript1.5")).isJS()).toBe(true);
-    expect((new MIMEType("text/jscript")).isJS()).toBe(true);
-    expect((new MIMEType("text/livescript")).isJS()).toBe(true);
-    expect((new MIMEType("text/x-ecmascript")).isJS()).toBe(true);
-    expect((new MIMEType("text/x-javascript")).isJS()).toBe(true);
+  test("isJavaScript", () => {
+    expect((new MIMEType("application/ecmascript")).isJavaScript()).toBe(true);
+    expect((new MIMEType("application/javascript")).isJavaScript()).toBe(true);
+    expect((new MIMEType("application/x-ecmascript")).isJavaScript()).toBe(true);
+    expect((new MIMEType("application/x-javascript")).isJavaScript()).toBe(true);
+    expect((new MIMEType("text/ecmascript")).isJavaScript()).toBe(true);
+    expect((new MIMEType("text/javascript1.0")).isJavaScript()).toBe(true);
+    expect((new MIMEType("text/javascript1.1")).isJavaScript()).toBe(true);
+    expect((new MIMEType("text/javascript1.2")).isJavaScript()).toBe(true);
+    expect((new MIMEType("text/javascript1.3")).isJavaScript()).toBe(true);
+    expect((new MIMEType("text/javascript1.4")).isJavaScript()).toBe(true);
+    expect((new MIMEType("text/javascript1.5")).isJavaScript()).toBe(true);
+    expect((new MIMEType("text/jscript")).isJavaScript()).toBe(true);
+    expect((new MIMEType("text/livescript")).isJavaScript()).toBe(true);
+    expect((new MIMEType("text/x-ecmascript")).isJavaScript()).toBe(true);
+    expect((new MIMEType("text/x-javascript")).isJavaScript()).toBe(true);
 
-    expect((new MIMEType("text/javascript")).isJS()).toBe(true);
+    expect((new MIMEType("text/javascript")).isJavaScript()).toBe(true);
 
-    expect((new MIMEType("text/javascript;charset=utf-8")).isJS()).toBe(false);
-    expect((new MIMEType("text/javascript;charset=utf-8")).isJS({ allowParameters: true })).toBe(true);
-    expect((new MIMEType("text/javascript;charset=utf-8")).isJS({})).toBe(false);
-    expect((new MIMEType("text/javascript;charset=utf-8")).isJS({ allowParameters: false })).toBe(false);
+    expect((new MIMEType("text/javascript;charset=utf-8")).isJavaScript()).toBe(false);
+    expect((new MIMEType("text/javascript;charset=utf-8")).isJavaScript({ allowParameters: true })).toBe(true);
+    expect((new MIMEType("text/javascript;charset=utf-8")).isJavaScript({})).toBe(false);
+    expect((new MIMEType("text/javascript;charset=utf-8")).isJavaScript({ allowParameters: false })).toBe(false);
 
-    expect((new MIMEType("text/javascript;charset=utf-8;goal=script")).isJS()).toBe(false);
-    expect((new MIMEType("text/javascript;charset=utf-8;goal=script")).isJS({ allowParameters: true })).toBe(true);
+    expect((new MIMEType("text/javascript;charset=utf-8;goal=script")).isJavaScript()).toBe(false);
+    expect((new MIMEType("text/javascript;charset=utf-8;goal=script")).isJavaScript({ allowParameters: true }))
+      .toBe(true);
 
-    expect((new MIMEType("text/javascript;goal=module")).isJS()).toBe(false);
-    expect((new MIMEType("text/javascript;goal=module")).isJS({ allowParameters: true })).toBe(true);
+    expect((new MIMEType("text/javascript;goal=module")).isJavaScript()).toBe(false);
+    expect((new MIMEType("text/javascript;goal=module")).isJavaScript({ allowParameters: true })).toBe(true);
   });
 });
