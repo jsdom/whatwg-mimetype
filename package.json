@@ -13,6 +13,7 @@
   "license": "MIT",
   "repository": "jsdom/whatwg-mimetype",
   "main": "lib/mime-type.js",
+  "types": "lib/mime-type.d.ts",
   "files": [
     "lib/"
   ],
