@@ -24,7 +24,7 @@ console.assert(mimeType.isXML() === false);
 
 Parsing is a fairly complex process; see [the specification](https://mimesniff.spec.whatwg.org/#parsing-a-mime-type) for details (and similarly [for serialization](https://mimesniff.spec.whatwg.org/#serializing-a-mime-type)).
 
-This package's algorithms conform to those of the WHATWG [MIME Sniffing Standard](https://mimesniff.spec.whatwg.org/), and is aligned up to commit [cc81ec4](https://github.com/whatwg/mimesniff/commit/cc81ec48288944562c4554069da1d74a71e199fb).
+This package's algorithms conform to those of the WHATWG [MIME Sniffing Standard](https://mimesniff.spec.whatwg.org/), and is aligned up to commit [190c18a](https://github.com/whatwg/mimesniff/commit/190c18af1d81754ff298cfb6fc9e581afdce4d2c).
 
 ## `MIMEType` API
 
