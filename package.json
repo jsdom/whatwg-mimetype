@@ -23,11 +23,11 @@
     "pretest": "node scripts/get-latest-platform-tests.js"
   },
   "devDependencies": {
-    "eslint": "^4.12.1",
-    "jest": "^21.2.1",
+    "eslint": "^5.5.0",
+    "jest": "^23.6.0",
     "printable-string": "^0.3.0",
-    "request": "^2.83.0",
-    "whatwg-encoding": "^1.0.3"
+    "request": "^2.88.0",
+    "whatwg-encoding": "^1.0.4"
   },
   "jest": {
     "coverageDirectory": "coverage",
