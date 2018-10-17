@@ -18,7 +18,7 @@ process.on("unhandledRejection", err => {
 // 1. Go to https://github.com/w3c/web-platform-tests/tree/master/mimesniff
 // 2. Press "y" on your keyboard to get a permalink
 // 3. Copy the commit hash
-const commitHash = "3600cbb1ecf8ae1b0521a3d4f5fd5480d0bc0f1f";
+const commitHash = "e6eff94820ec53bbcb14100adfdbb301f68d1a11";
 
 const urlPrefix = `https://raw.githubusercontent.com/w3c/web-platform-tests/${commitHash}` +
                   `/mimesniff/mime-types/resources/`;

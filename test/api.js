@@ -8,7 +8,7 @@ describe("Smoke tests via README intro example", () => {
   });
 
   it("serializes correctly", () => {
-    expect(mimeType.toString()).toEqual("text/html;charset=utf-8");
+    expect(mimeType.toString()).toEqual("text/html; charset=utf-8");
   });
 
   it("has the correct type, subtype, and essence", () => {
@@ -26,7 +26,7 @@ describe("Smoke tests via README intro example", () => {
   it("responds to parameter setting", () => {
     mimeType.parameters.set("charset", "windows-1252");
     expect(mimeType.parameters.get("charset")).toEqual("windows-1252");
-    expect(mimeType.toString()).toEqual("text/html;charset=windows-1252");
+    expect(mimeType.toString()).toEqual("text/html; charset=windows-1252");
   });
 });
 
@@ -76,14 +76,14 @@ describe("type manipulation", () => {
     mimeType.type = "text";
     expect(mimeType.type).toEqual("text");
     expect(mimeType.essence).toEqual("text/xml");
-    expect(mimeType.toString()).toEqual("text/xml;foo=bar");
+    expect(mimeType.toString()).toEqual("text/xml; foo=bar");
   });
 
   it("ASCII-lowercases incoming type strings", () => {
     mimeType.type = "TeXT";
     expect(mimeType.type).toEqual("text");
     expect(mimeType.essence).toEqual("text/xml");
-    expect(mimeType.toString()).toEqual("text/xml;foo=bar");
+    expect(mimeType.toString()).toEqual("text/xml; foo=bar");
   });
 
   it("converts the value set to a string", () => {
@@ -94,7 +94,7 @@ describe("type manipulation", () => {
     };
     expect(mimeType.type).toEqual("text");
     expect(mimeType.essence).toEqual("text/xml");
-    expect(mimeType.toString()).toEqual("text/xml;foo=bar");
+    expect(mimeType.toString()).toEqual("text/xml; foo=bar");
   });
 
   it("throws an error for non-HTTP token code points", () => {
@@ -121,14 +121,14 @@ describe("subtype manipulation", () => {
     mimeType.subtype = "pdf";
     expect(mimeType.subtype).toEqual("pdf");
     expect(mimeType.essence).toEqual("application/pdf");
-    expect(mimeType.toString()).toEqual("application/pdf;foo=bar");
+    expect(mimeType.toString()).toEqual("application/pdf; foo=bar");
   });
 
   it("ASCII-lowercases incoming type strings", () => {
     mimeType.subtype = "PdF";
     expect(mimeType.subtype).toEqual("pdf");
     expect(mimeType.essence).toEqual("application/pdf");
-    expect(mimeType.toString()).toEqual("application/pdf;foo=bar");
+    expect(mimeType.toString()).toEqual("application/pdf; foo=bar");
   });
 
   it("converts the value set to a string", () => {
@@ -139,7 +139,7 @@ describe("subtype manipulation", () => {
     };
     expect(mimeType.subtype).toEqual("pdf");
     expect(mimeType.essence).toEqual("application/pdf");
-    expect(mimeType.toString()).toEqual("application/pdf;foo=bar");
+    expect(mimeType.toString()).toEqual("application/pdf; foo=bar");
   });
 
   it("throws an error for non-HTTP token code points", () => {
@@ -160,7 +160,7 @@ describe("Group-testing functions", () => {
   test("isHTML", () => {
     expect((new MIMEType("text/html")).isHTML()).toBe(true);
     expect((new MIMEType("text/html;charset=utf-8")).isHTML()).toBe(true);
-    expect((new MIMEType("text/html;charset=utf-8;foo=bar")).isHTML()).toBe(true);
+    expect((new MIMEType("text/html;charset=utf-8; foo=bar")).isHTML()).toBe(true);
 
     expect((new MIMEType("text/xhtml")).isHTML()).toBe(false);
     expect((new MIMEType("application/html")).isHTML()).toBe(false);
@@ -170,19 +170,19 @@ describe("Group-testing functions", () => {
   test("isXML", () => {
     expect((new MIMEType("application/xml")).isXML()).toBe(true);
     expect((new MIMEType("application/xml;charset=utf-8")).isXML()).toBe(true);
-    expect((new MIMEType("application/xml;charset=utf-8;foo=bar")).isXML()).toBe(true);
+    expect((new MIMEType("application/xml;charset=utf-8; foo=bar")).isXML()).toBe(true);
 
     expect((new MIMEType("text/xml")).isXML()).toBe(true);
     expect((new MIMEType("text/xml;charset=utf-8")).isXML()).toBe(true);
-    expect((new MIMEType("text/xml;charset=utf-8;foo=bar")).isXML()).toBe(true);
+    expect((new MIMEType("text/xml;charset=utf-8; foo=bar")).isXML()).toBe(true);
 
     expect((new MIMEType("text/svg+xml")).isXML()).toBe(true);
     expect((new MIMEType("text/svg+xml;charset=utf-8")).isXML()).toBe(true);
-    expect((new MIMEType("text/svg+xml;charset=utf-8;foo=bar")).isXML()).toBe(true);
+    expect((new MIMEType("text/svg+xml;charset=utf-8; foo=bar")).isXML()).toBe(true);
 
     expect((new MIMEType("application/xhtml+xml")).isXML()).toBe(true);
-    expect((new MIMEType("application/xhtml+xml;charset=utf-8")).isXML()).toBe(true);
-    expect((new MIMEType("application/xhtml+xml;charset=utf-8;foo=bar")).isXML()).toBe(true);
+    expect((new MIMEType("application/xhtml+xml; charset=utf-8")).isXML()).toBe(true);
+    expect((new MIMEType("application/xhtml+xml; charset=utf-8; foo=bar")).isXML()).toBe(true);
 
     expect((new MIMEType("text/xhtml")).isXML()).toBe(false);
     expect((new MIMEType("text/svg")).isXML()).toBe(false);
@@ -209,16 +209,16 @@ describe("Group-testing functions", () => {
 
     expect((new MIMEType("text/javascript")).isJavaScript()).toBe(true);
 
-    expect((new MIMEType("text/javascript;charset=utf-8")).isJavaScript()).toBe(false);
-    expect((new MIMEType("text/javascript;charset=utf-8")).isJavaScript({ allowParameters: true })).toBe(true);
-    expect((new MIMEType("text/javascript;charset=utf-8")).isJavaScript({})).toBe(false);
-    expect((new MIMEType("text/javascript;charset=utf-8")).isJavaScript({ allowParameters: false })).toBe(false);
+    expect((new MIMEType("text/javascript; charset=utf-8")).isJavaScript()).toBe(false);
+    expect((new MIMEType("text/javascript; charset=utf-8")).isJavaScript({ allowParameters: true })).toBe(true);
+    expect((new MIMEType("text/javascript; charset=utf-8")).isJavaScript({})).toBe(false);
+    expect((new MIMEType("text/javascript; charset=utf-8")).isJavaScript({ allowParameters: false })).toBe(false);
 
-    expect((new MIMEType("text/javascript;charset=utf-8;goal=script")).isJavaScript()).toBe(false);
-    expect((new MIMEType("text/javascript;charset=utf-8;goal=script")).isJavaScript({ allowParameters: true }))
+    expect((new MIMEType("text/javascript; charset=utf-8; goal=script")).isJavaScript()).toBe(false);
+    expect((new MIMEType("text/javascript; charset=utf-8; goal=script")).isJavaScript({ allowParameters: true }))
       .toBe(true);
 
-    expect((new MIMEType("text/javascript;goal=module")).isJavaScript()).toBe(false);
-    expect((new MIMEType("text/javascript;goal=module")).isJavaScript({ allowParameters: true })).toBe(true);
+    expect((new MIMEType("text/javascript; goal=module")).isJavaScript()).toBe(false);
+    expect((new MIMEType("text/javascript; goal=module")).isJavaScript({ allowParameters: true })).toBe(true);
   });
 });
