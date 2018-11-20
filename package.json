@@ -8,7 +8,7 @@
     "http",
     "whatwg"
   ],
-  "version": "2.2.0",
+  "version": "2.3.0",
   "author": "Domenic Denicola <d@domenic.me> (https://domenic.me/)",
   "license": "MIT",
   "repository": "jsdom/whatwg-mimetype",
