@@ -23,6 +23,7 @@
     "pretest": "node scripts/get-latest-platform-tests.js"
   },
   "devDependencies": {
+    "@domenic/eslint-config": "^1.4.0",
     "eslint": "^7.32.0",
     "jest": "^27.2.0",
     "minipass-fetch": "^1.4.1",

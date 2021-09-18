@@ -1,7 +1,5 @@
 {
   "env": {
-    "node": true,
-    "jasmine": true,
     "jest": true
   }
 }
