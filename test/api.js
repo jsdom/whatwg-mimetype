@@ -209,16 +209,16 @@ describe("Group-testing functions", () => {
 
     expect((new MIMEType("text/javascript")).isJavaScript()).toBe(true);
 
-    expect((new MIMEType("text/javascript;charset=utf-8")).isJavaScript()).toBe(false);
-    expect((new MIMEType("text/javascript;charset=utf-8")).isJavaScript({ allowParameters: true })).toBe(true);
-    expect((new MIMEType("text/javascript;charset=utf-8")).isJavaScript({})).toBe(false);
-    expect((new MIMEType("text/javascript;charset=utf-8")).isJavaScript({ allowParameters: false })).toBe(false);
+    expect((new MIMEType("text/javascript;charset=utf-8")).isJavaScript()).toBe(true);
+    expect((new MIMEType("text/javascript;charset=utf-8")).isJavaScript({ prohibitParameters: true })).toBe(false);
+    expect((new MIMEType("text/javascript;charset=utf-8")).isJavaScript({})).toBe(true);
+    expect((new MIMEType("text/javascript;charset=utf-8")).isJavaScript({ prohibitParameters: true })).toBe(false);
 
-    expect((new MIMEType("text/javascript;charset=utf-8;goal=script")).isJavaScript()).toBe(false);
-    expect((new MIMEType("text/javascript;charset=utf-8;goal=script")).isJavaScript({ allowParameters: true }))
-      .toBe(true);
+    expect((new MIMEType("text/javascript;charset=utf-8;goal=script")).isJavaScript()).toBe(true);
+    expect((new MIMEType("text/javascript;charset=utf-8;goal=script")).isJavaScript({ prohibitParameters: true }))
+      .toBe(false);
 
-    expect((new MIMEType("text/javascript;goal=module")).isJavaScript()).toBe(false);
-    expect((new MIMEType("text/javascript;goal=module")).isJavaScript({ allowParameters: true })).toBe(true);
+    expect((new MIMEType("text/javascript;goal=module")).isJavaScript()).toBe(true);
+    expect((new MIMEType("text/javascript;goal=module")).isJavaScript({ prohibitParameters: true })).toBe(false);
   });
 });
