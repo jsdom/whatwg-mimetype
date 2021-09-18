@@ -52,7 +52,7 @@ As an alternative to the constructor, you can use `MIMEType.parse(string)`. The 
 - `toString()` serializes the MIME type to a string
 - `isHTML()`: returns true if this instance represents [a HTML MIME type](https://mimesniff.spec.whatwg.org/#html-mime-type)
 - `isXML()`: returns true if this instance represents [an XML MIME type](https://mimesniff.spec.whatwg.org/#xml-mime-type)
-- `isJavaScript({ allowParameters })`: returns true if this instance represents [a JavaScript MIME type](https://html.spec.whatwg.org/multipage/scripting.html#javascript-mime-type); `allowParameters` can be set to true to allow arbitrary parameters, instead of their presence causing the method to return `false`
+- `isJavaScript({ prohibitParameters })`: returns true if this instance represents [a JavaScript MIME type](https://html.spec.whatwg.org/multipage/scripting.html#javascript-mime-type). `prohibitParameters` can be set to true to disallow any parameters, i.e. to test if the MIME type's serialization is a [JavaScript MIME type essence match](https://mimesniff.spec.whatwg.org/#javascript-mime-type-essence-match).
 
 _Note: the `isHTML()`, `isXML()`, and `isJavaScript()` methods are speculative, and may be removed or changed in future major versions. See [whatwg/mimesniff#48](https://github.com/whatwg/mimesniff/issues/48) for brainstorming in this area. Currently we implement these mainly because they are useful in jsdom._
 
