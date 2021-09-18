@@ -23,11 +23,14 @@
     "pretest": "node scripts/get-latest-platform-tests.js"
   },
   "devDependencies": {
-    "eslint": "^5.9.0",
-    "jest": "^23.6.0",
+    "eslint": "^7.32.0",
+    "jest": "^27.2.0",
+    "minipass-fetch": "^1.4.1",
     "printable-string": "^0.3.0",
-    "request": "^2.88.0",
-    "whatwg-encoding": "^1.0.5"
+    "whatwg-encoding": "^2.0.0"
+  },
+  "engines": {
+    "node": ">=12"
   },
   "jest": {
     "coverageDirectory": "coverage",
