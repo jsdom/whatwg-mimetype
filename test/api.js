@@ -221,4 +221,62 @@ describe("Group-testing functions", () => {
     expect((new MIMEType("text/javascript;goal=module")).isJavaScript()).toBe(true);
     expect((new MIMEType("text/javascript;goal=module")).isJavaScript({ prohibitParameters: true })).toBe(false);
   });
+
+  test("isImage", () => {
+    expect((new MIMEType("image/jpeg")).isImage()).toBe(true);
+    expect((new MIMEType("image/png")).isImage()).toBe(true);
+
+    expect((new MIMEType("application/jpeg")).isImage()).toBe(false);
+  });
+
+  test("isAudioOrVideo", () => {
+    expect((new MIMEType("audio/acc")).isAudioOrVideo()).toBe(true);
+    expect((new MIMEType("video/acc")).isAudioOrVideo()).toBe(true);
+    expect((new MIMEType("application/ogg")).isAudioOrVideo()).toBe(true);
+
+    expect((new MIMEType("application/acc")).isAudioOrVideo()).toBe(false);
+  });
+
+  test("isFont", () => {
+    expect((new MIMEType("font/otf")).isFont()).toBe(true);
+    expect((new MIMEType("font/ttf")).isFont()).toBe(true);
+
+    for (const exceptionalMimeType of [
+      "application/font-cff",
+      "application/font-off",
+      "application/font-sfnt",
+      "application/font-ttf",
+      "application/font-woff",
+      "application/vnd.ms-fontobject",
+      "application/vnd.ms-opentype"
+    ]) {
+      expect((new MIMEType(exceptionalMimeType)).isFont()).toBe(true);
+    }
+
+    expect((new MIMEType("application/ttf")).isFont()).toBe(false);
+  });
+
+  test("isZIPBased", () => {
+    expect((new MIMEType("font/otf+zip")).isZIPBased()).toBe(true);
+    expect((new MIMEType("video/mpeg+zip")).isZIPBased()).toBe(true);
+    expect((new MIMEType("application/zip")).isZIPBased()).toBe(true);
+
+    expect((new MIMEType("archive/zip")).isZIPBased()).toBe(false);
+  });
+
+  test("isArchive", () => {
+    expect((new MIMEType("application/x-rar-compressed")).isArchive()).toBe(true);
+    expect((new MIMEType("application/zip")).isArchive()).toBe(true);
+    expect((new MIMEType("application/x-gzip")).isArchive()).toBe(true);
+
+    expect((new MIMEType("archive/zip")).isArchive()).toBe(false);
+  });
+
+  test("isJSON", () => {
+    expect((new MIMEType("application/json")).isJSON()).toBe(true);
+    expect((new MIMEType("text/json")).isJSON()).toBe(true);
+    expect((new MIMEType("application/ld+json")).isJSON()).toBe(true);
+
+    expect((new MIMEType("json/text")).isJSON()).toBe(false);
+  });
 });
