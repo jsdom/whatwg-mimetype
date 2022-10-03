@@ -1,5 +1,10 @@
-/node_modules/
-/npm-debug.log
+node_modules
+dist
+
+### VisualStudioCode ###
+.vscode/**/*
+!.vscode/settings.json
+tests/scratch.js
 
 /coverage/
 /test/web-platform-tests/*

@@ -1,7 +1,8 @@
-"use strict";
-const path = require("path");
-const fs = require("fs");
-const fetch = require("minipass-fetch");
+import path from 'path';
+import url from 'url';
+import { resolve } from "path";
+import { createWriteStream } from "fs";
+import fetch from "minipass-fetch";
 
 // Pin to specific version, reflecting the spec version in the readme.
 //
@@ -15,6 +16,8 @@ const urlPrefix = `https://raw.githubusercontent.com/w3c/web-platform-tests/${co
                   `/mimesniff/mime-types/resources/`;
 
 const files = ["mime-types.json", "generated-mime-types.json"];
+const __filename = url.fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 async function main() {
   if (process.env.NO_UPDATE) {
@@ -23,9 +26,9 @@ async function main() {
 
   for (const file of files) {
     const url = urlPrefix + file;
-    const targetFile = path.resolve(__dirname, "..", "test", "web-platform-tests", file);
+    const targetFile = resolve(__dirname, "..", "test", "web-platform-tests", file);
     const res = await fetch(url);
-    res.body.pipe(fs.createWriteStream(targetFile));
+    res.body.pipe(createWriteStream(targetFile));
   }
 }
 

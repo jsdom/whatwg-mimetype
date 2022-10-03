@@ -1,11 +1,6 @@
-"use strict";
-const {
-  asciiLowercase,
-  solelyContainsHTTPTokenCodePoints,
-  soleyContainsHTTPQuotedStringTokenCodePoints
-} = require("./utils.js");
+import { asciiLowercase, solelyContainsHTTPTokenCodePoints, solelyContainsHTTPQuotedStringTokenCodePoints } from './utils.js';
 
-module.exports = class MIMETypeParameters {
+export default class MIMETypeParameters {
   constructor(map) {
     this._map = map;
   }
@@ -15,25 +10,23 @@ module.exports = class MIMETypeParameters {
   }
 
   get(name) {
-    name = asciiLowercase(String(name));
-    return this._map.get(name);
+    return this._map.get(asciiLowercase(String(name)));
   }
 
   has(name) {
-    name = asciiLowercase(String(name));
-    return this._map.has(name);
+    return this._map.has(asciiLowercase(String(name)));
   }
 
-  set(name, value) {
+  set(name, value) {		
     name = asciiLowercase(String(name));
     value = String(value);
 
     if (!solelyContainsHTTPTokenCodePoints(name)) {
       throw new Error(`Invalid MIME type parameter name "${name}": only HTTP token code points are valid.`);
     }
-    if (!soleyContainsHTTPQuotedStringTokenCodePoints(value)) {
-      throw new Error(`Invalid MIME type parameter value "${value}": only HTTP quoted-string token code points are ` +
-                      `valid.`);
+
+    if (!solelyContainsHTTPQuotedStringTokenCodePoints(value)) {
+      throw new Error(`Invalid MIME type parameter value "${value}": only HTTP quoted-string token code points are valid.`);
     }
 
     return this._map.set(name, value);

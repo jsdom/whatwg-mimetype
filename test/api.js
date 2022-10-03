@@ -1,5 +1,4 @@
-"use strict";
-const MIMEType = require("..");
+import MIMEType from '../src/mime-type.js';
 
 describe("Smoke tests via README intro example", () => {
   let mimeType;

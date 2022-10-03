@@ -1,10 +1,10 @@
 "use strict";
-const encodingLabelToName = require("whatwg-encoding").labelToName;
-const printableString = require("printable-string");
-const testCases = require("./web-platform-tests/mime-types.json");
-const generatedTestCases = require("./web-platform-tests/generated-mime-types.json");
-const parse = require("../lib/parser.js");
-const serialize = require("../lib/serializer.js");
+import { labelToName as encodingLabelToName } from "whatwg-encoding";
+import printableString from "printable-string";
+import testCases from "./web-platform-tests/mime-types.json";
+import generatedTestCases from "./web-platform-tests/generated-mime-types.json";
+import parse from "../src/parser.js";
+import serialize from "../src/serializer.js";
 
 describe("mime-types.json", () => {
   runTestCases(testCases);
