@@ -8,7 +8,7 @@
     "http",
     "whatwg"
   ],
-  "version": "3.0.0",
+  "version": "4.0.0",
   "author": "Domenic Denicola <d@domenic.me> (https://domenic.me/)",
   "license": "MIT",
   "repository": "jsdom/whatwg-mimetype",
@@ -33,7 +33,10 @@
     "node": ">=18"
   },
   "c8": {
-    "reporter": ["text", "html"],
+    "reporter": [
+      "text",
+      "html"
+    ],
     "exclude": [
       "scripts/",
       "test/"
