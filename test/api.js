@@ -32,6 +32,64 @@ describe("Smoke tests via README intro example", () => {
   });
 });
 
+describe("MIMETypeParameters object", () => {
+  let mimeType;
+  beforeEach(() => {
+    mimeType = new MIMEType(`Text/HTML;Charset="utf-8";foo="bar"`);
+  });
+
+  it("rejects setting only HTTP token code points in the name", () => {
+    assert.throws(() => {
+      mimeType.parameters.set("@", "a");
+    });
+  });
+
+  it("rejects setting only HTTP quoted string token code points in the value", () => {
+    assert.throws(() => {
+      mimeType.parameters.set("a", "\u0019");
+    });
+  });
+
+  it("has the correct keys, values, and entries", () => {
+    assert.deepEqual(Array.from(mimeType.parameters.keys()), ["charset", "foo"]);
+    assert.deepEqual(Array.from(mimeType.parameters.values()), ["utf-8", "bar"]);
+    assert.deepEqual(Array.from(mimeType.parameters.entries()), [
+      ["charset", "utf-8"],
+      ["foo", "bar"]
+    ]);
+  });
+
+  it("can be clear()ed", () => {
+    mimeType.parameters.clear();
+
+    assert.equal(mimeType.parameters.size, 0);
+    assert.deepEqual(Array.from(mimeType.parameters.keys()), []);
+    assert.deepEqual(Array.from(mimeType.parameters.values()), []);
+    assert.deepEqual(Array.from(mimeType.parameters.entries()), []);
+  });
+
+  it("can have a parameter deleted, including by a non-canonical casing", () => {
+    mimeType.parameters.delete("chArset");
+    assert.equal(mimeType.parameters.size, 1);
+    assert.deepEqual(Array.from(mimeType.parameters.keys()), ["foo"]);
+  });
+
+  it("can be iterated over with forEach()", () => {
+    const entries = [];
+    const thisArg = { this: "arg" };
+    const recordedThisArgs = [];
+    mimeType.parameters.forEach(function (value, name) {
+      entries.push([name, value]);
+      recordedThisArgs.push(this);
+    }, thisArg);
+
+    assert.deepEqual(entries, [["charset", "utf-8"], ["foo", "bar"]]);
+    assert.equal(recordedThisArgs.length, 2);
+    assert.equal(recordedThisArgs[0], thisArg);
+    assert.equal(recordedThisArgs[1], thisArg);
+  });
+});
+
 describe("Constructor behavior", () => {
   it("converts incoming arguments into strings", () => {
     const arg = {
@@ -193,23 +251,31 @@ describe("Group-testing functions", () => {
   });
 
   test("isJavaScript", () => {
-    assert.equal((new MIMEType("application/ecmascript")).isJavaScript(), true);
-    assert.equal((new MIMEType("application/javascript")).isJavaScript(), true);
-    assert.equal((new MIMEType("application/x-ecmascript")).isJavaScript(), true);
-    assert.equal((new MIMEType("application/x-javascript")).isJavaScript(), true);
-    assert.equal((new MIMEType("text/ecmascript")).isJavaScript(), true);
-    assert.equal((new MIMEType("text/javascript1.0")).isJavaScript(), true);
-    assert.equal((new MIMEType("text/javascript1.1")).isJavaScript(), true);
-    assert.equal((new MIMEType("text/javascript1.2")).isJavaScript(), true);
-    assert.equal((new MIMEType("text/javascript1.3")).isJavaScript(), true);
-    assert.equal((new MIMEType("text/javascript1.4")).isJavaScript(), true);
-    assert.equal((new MIMEType("text/javascript1.5")).isJavaScript(), true);
-    assert.equal((new MIMEType("text/jscript")).isJavaScript(), true);
-    assert.equal((new MIMEType("text/livescript")).isJavaScript(), true);
-    assert.equal((new MIMEType("text/x-ecmascript")).isJavaScript(), true);
-    assert.equal((new MIMEType("text/x-javascript")).isJavaScript(), true);
+    for (const prohibitParameters of [false, true]) {
+      assert.equal((new MIMEType("application/ecmascript")).isJavaScript({ prohibitParameters }), true);
+      assert.equal((new MIMEType("application/javascript")).isJavaScript({ prohibitParameters }), true);
+      assert.equal((new MIMEType("application/x-ecmascript")).isJavaScript({ prohibitParameters }), true);
+      assert.equal((new MIMEType("application/x-javascript")).isJavaScript({ prohibitParameters }), true);
+      assert.equal((new MIMEType("text/ecmascript")).isJavaScript({ prohibitParameters }), true);
+      assert.equal((new MIMEType("text/javascript1.0")).isJavaScript({ prohibitParameters }), true);
+      assert.equal((new MIMEType("text/javascript1.1")).isJavaScript({ prohibitParameters }), true);
+      assert.equal((new MIMEType("text/javascript1.2")).isJavaScript({ prohibitParameters }), true);
+      assert.equal((new MIMEType("text/javascript1.3")).isJavaScript({ prohibitParameters }), true);
+      assert.equal((new MIMEType("text/javascript1.4")).isJavaScript({ prohibitParameters }), true);
+      assert.equal((new MIMEType("text/javascript1.5")).isJavaScript({ prohibitParameters }), true);
+      assert.equal((new MIMEType("text/jscript")).isJavaScript({ prohibitParameters }), true);
+      assert.equal((new MIMEType("text/livescript")).isJavaScript({ prohibitParameters }), true);
+      assert.equal((new MIMEType("text/x-ecmascript")).isJavaScript({ prohibitParameters }), true);
+      assert.equal((new MIMEType("text/x-javascript")).isJavaScript({ prohibitParameters }), true);
+      assert.equal((new MIMEType("text/javascript")).isJavaScript({ prohibitParameters }), true);
 
-    assert.equal((new MIMEType("text/javascript")).isJavaScript(), true);
+      assert.equal((new MIMEType("text/plain")).isJavaScript({ prohibitParameters }), false);
+      assert.equal((new MIMEType("application/xhtml+xml")).isJavaScript({ prohibitParameters }), false);
+      assert.equal((new MIMEType("video/javascript")).isJavaScript({ prohibitParameters }), false);
+    }
+
+    assert.equal((new MIMEType("text/plain;charset=utf-8")).isJavaScript(), false);
+    assert.equal((new MIMEType("text/plain;charset=utf-8")).isJavaScript({ prohibitParameters: true }), false);
 
     assert.equal((new MIMEType("text/javascript;charset=utf-8")).isJavaScript(), true);
     assert.equal((new MIMEType("text/javascript;charset=utf-8")).isJavaScript({ prohibitParameters: true }), false);
