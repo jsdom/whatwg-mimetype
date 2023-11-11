@@ -12,17 +12,14 @@ jobs:
       fail-fast: false
       matrix:
         node-version:
-          - 12
-          - 14
-          - 16
-        architecture:
-          - x64
+          - 18
+          - 20
+          - latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v2
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
-        architecture: ${{ matrix.architecture }}
     - run: yarn --frozen-lockfile
     - run: yarn lint
     - run: yarn test
