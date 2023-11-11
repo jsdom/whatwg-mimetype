@@ -17,31 +17,26 @@
     "lib/"
   ],
   "scripts": {
-    "test": "jest",
-    "coverage": "jest --coverage",
+    "test": "node --test",
+    "coverage": "c8 node --test --experimental-test-coverage",
     "lint": "eslint .",
     "pretest": "node scripts/get-latest-platform-tests.js"
   },
   "devDependencies": {
-    "@domenic/eslint-config": "^1.4.0",
-    "eslint": "^7.32.0",
-    "jest": "^27.2.0",
-    "minipass-fetch": "^1.4.1",
+    "@domenic/eslint-config": "^3.0.0",
+    "c8": "^8.0.1",
+    "eslint": "^8.53.0",
     "printable-string": "^0.3.0",
-    "whatwg-encoding": "^2.0.0"
+    "whatwg-encoding": "^3.0.0"
   },
   "engines": {
     "node": ">=18"
   },
-  "jest": {
-    "coverageDirectory": "coverage",
-    "coverageReporters": [
-      "lcov",
-      "text-summary"
-    ],
-    "testEnvironment": "node",
-    "testMatch": [
-      "<rootDir>/test/**/*.js"
+  "c8": {
+    "reporter": ["text", "html"],
+    "exclude": [
+      "scripts/",
+      "test/"
     ]
   }
 }

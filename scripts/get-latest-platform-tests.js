@@ -1,7 +1,11 @@
 "use strict";
-const path = require("path");
-const fs = require("fs");
-const fetch = require("minipass-fetch");
+
+if (process.env.NO_UPDATE) {
+  process.exit(0);
+}
+
+const path = require("node:path");
+const fs = require("node:fs/promises");
 
 // Pin to specific version, reflecting the spec version in the readme.
 //
@@ -17,16 +21,12 @@ const urlPrefix = `https://raw.githubusercontent.com/w3c/web-platform-tests/${co
 const files = ["mime-types.json", "generated-mime-types.json"];
 
 async function main() {
-  if (process.env.NO_UPDATE) {
-    return;
-  }
-
-  for (const file of files) {
+  await Promise.all(files.map(async file => {
     const url = urlPrefix + file;
     const targetFile = path.resolve(__dirname, "..", "test", "web-platform-tests", file);
     const res = await fetch(url);
-    res.body.pipe(fs.createWriteStream(targetFile));
-  }
+    await fs.writeFile(targetFile, res.body);
+  }));
 }
 
 main().catch(e => {

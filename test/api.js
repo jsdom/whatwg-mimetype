@@ -1,4 +1,6 @@
 "use strict";
+const { describe, it, test, beforeEach } = require("node:test");
+const assert = require("node:assert");
 const MIMEType = require("..");
 
 describe("Smoke tests via README intro example", () => {
@@ -8,25 +10,25 @@ describe("Smoke tests via README intro example", () => {
   });
 
   it("serializes correctly", () => {
-    expect(mimeType.toString()).toEqual("text/html;charset=utf-8");
+    assert.equal(mimeType.toString(), "text/html;charset=utf-8");
   });
 
   it("has the correct type, subtype, and essence", () => {
-    expect(mimeType.type).toEqual("text");
-    expect(mimeType.subtype).toEqual("html");
-    expect(mimeType.essence).toEqual("text/html");
+    assert.equal(mimeType.type, "text");
+    assert.equal(mimeType.subtype, "html");
+    assert.equal(mimeType.essence, "text/html");
   });
 
   it("has the correct parameters", () => {
-    expect(mimeType.parameters.size).toEqual(1);
-    expect(mimeType.parameters.has("charset")).toBe(true);
-    expect(mimeType.parameters.get("charset")).toEqual("utf-8");
+    assert.equal(mimeType.parameters.size, 1);
+    assert.equal(mimeType.parameters.has("charset"), true);
+    assert.equal(mimeType.parameters.get("charset"), "utf-8");
   });
 
   it("responds to parameter setting", () => {
     mimeType.parameters.set("charset", "windows-1252");
-    expect(mimeType.parameters.get("charset")).toEqual("windows-1252");
-    expect(mimeType.toString()).toEqual("text/html;charset=windows-1252");
+    assert.equal(mimeType.parameters.get("charset"), "windows-1252");
+    assert.equal(mimeType.toString(), "text/html;charset=windows-1252");
   });
 });
 
@@ -39,12 +41,12 @@ describe("Constructor behavior", () => {
     };
     const mimeType = new MIMEType(arg);
 
-    expect(mimeType.toString()).toEqual("text/html");
+    assert.equal(mimeType.toString(), "text/html");
   });
 
   it("throws on unparseable MIME types", () => {
-    expect(() => new MIMEType("asdf")).toThrow();
-    expect(() => new MIMEType("text/html™")).toThrow();
+    assert.throws(() => new MIMEType("asdf"));
+    assert.throws(() => new MIMEType("text/html™"));
   });
 });
 
@@ -57,12 +59,12 @@ describe("static parse() behavior", () => {
     };
     const mimeType = MIMEType.parse(arg);
 
-    expect(mimeType.toString()).toEqual("text/html");
+    assert.equal(mimeType.toString(), "text/html");
   });
 
   it("returns null on unparseable MIME types", () => {
-    expect(MIMEType.parse("asdf")).toBe(null);
-    expect(MIMEType.parse("text/html™")).toBe(null);
+    assert.equal(MIMEType.parse("asdf"), null);
+    assert.equal(MIMEType.parse("text/html™"), null);
   });
 });
 
@@ -74,16 +76,16 @@ describe("type manipulation", () => {
 
   it("responds to type being set", () => {
     mimeType.type = "text";
-    expect(mimeType.type).toEqual("text");
-    expect(mimeType.essence).toEqual("text/xml");
-    expect(mimeType.toString()).toEqual("text/xml;foo=bar");
+    assert.equal(mimeType.type, "text");
+    assert.equal(mimeType.essence, "text/xml");
+    assert.equal(mimeType.toString(), "text/xml;foo=bar");
   });
 
   it("ASCII-lowercases incoming type strings", () => {
     mimeType.type = "TeXT";
-    expect(mimeType.type).toEqual("text");
-    expect(mimeType.essence).toEqual("text/xml");
-    expect(mimeType.toString()).toEqual("text/xml;foo=bar");
+    assert.equal(mimeType.type, "text");
+    assert.equal(mimeType.essence, "text/xml");
+    assert.equal(mimeType.toString(), "text/xml;foo=bar");
   });
 
   it("converts the value set to a string", () => {
@@ -92,22 +94,22 @@ describe("type manipulation", () => {
         return "TeXT";
       }
     };
-    expect(mimeType.type).toEqual("text");
-    expect(mimeType.essence).toEqual("text/xml");
-    expect(mimeType.toString()).toEqual("text/xml;foo=bar");
+    assert.equal(mimeType.type, "text");
+    assert.equal(mimeType.essence, "text/xml");
+    assert.equal(mimeType.toString(), "text/xml;foo=bar");
   });
 
   it("throws an error for non-HTTP token code points", () => {
     // not exhaustive; maybe later
-    expect(() => {
+    assert.throws(() => {
       mimeType.type = "/";
-    }).toThrow();
+    });
   });
 
   it("throws an error for an empty string", () => {
-    expect(() => {
+    assert.throws(() => {
       mimeType.type = "";
-    }).toThrow();
+    });
   });
 });
 
@@ -119,16 +121,16 @@ describe("subtype manipulation", () => {
 
   it("responds to type being set", () => {
     mimeType.subtype = "pdf";
-    expect(mimeType.subtype).toEqual("pdf");
-    expect(mimeType.essence).toEqual("application/pdf");
-    expect(mimeType.toString()).toEqual("application/pdf;foo=bar");
+    assert.equal(mimeType.subtype, "pdf");
+    assert.equal(mimeType.essence, "application/pdf");
+    assert.equal(mimeType.toString(), "application/pdf;foo=bar");
   });
 
   it("ASCII-lowercases incoming type strings", () => {
     mimeType.subtype = "PdF";
-    expect(mimeType.subtype).toEqual("pdf");
-    expect(mimeType.essence).toEqual("application/pdf");
-    expect(mimeType.toString()).toEqual("application/pdf;foo=bar");
+    assert.equal(mimeType.subtype, "pdf");
+    assert.equal(mimeType.essence, "application/pdf");
+    assert.equal(mimeType.toString(), "application/pdf;foo=bar");
   });
 
   it("converts the value set to a string", () => {
@@ -137,88 +139,90 @@ describe("subtype manipulation", () => {
         return "PdF";
       }
     };
-    expect(mimeType.subtype).toEqual("pdf");
-    expect(mimeType.essence).toEqual("application/pdf");
-    expect(mimeType.toString()).toEqual("application/pdf;foo=bar");
+    assert.equal(mimeType.subtype, "pdf");
+    assert.equal(mimeType.essence, "application/pdf");
+    assert.equal(mimeType.toString(), "application/pdf;foo=bar");
   });
 
   it("throws an error for non-HTTP token code points", () => {
     // not exhaustive; maybe later
-    expect(() => {
+    assert.throws(() => {
       mimeType.subtype = "/";
-    }).toThrow();
+    });
   });
 
   it("throws an error for an empty string", () => {
-    expect(() => {
+    assert.throws(() => {
       mimeType.subtype = "";
-    }).toThrow();
+    });
   });
 });
 
 describe("Group-testing functions", () => {
   test("isHTML", () => {
-    expect((new MIMEType("text/html")).isHTML()).toBe(true);
-    expect((new MIMEType("text/html;charset=utf-8")).isHTML()).toBe(true);
-    expect((new MIMEType("text/html;charset=utf-8;foo=bar")).isHTML()).toBe(true);
+    assert.equal((new MIMEType("text/html")).isHTML(), true);
+    assert.equal((new MIMEType("text/html;charset=utf-8")).isHTML(), true);
+    assert.equal((new MIMEType("text/html;charset=utf-8;foo=bar")).isHTML(), true);
 
-    expect((new MIMEType("text/xhtml")).isHTML()).toBe(false);
-    expect((new MIMEType("application/html")).isHTML()).toBe(false);
-    expect((new MIMEType("application/xhtml+xml")).isHTML()).toBe(false);
+    assert.equal((new MIMEType("text/xhtml")).isHTML(), false);
+    assert.equal((new MIMEType("application/html")).isHTML(), false);
+    assert.equal((new MIMEType("application/xhtml+xml")).isHTML(), false);
   });
 
   test("isXML", () => {
-    expect((new MIMEType("application/xml")).isXML()).toBe(true);
-    expect((new MIMEType("application/xml;charset=utf-8")).isXML()).toBe(true);
-    expect((new MIMEType("application/xml;charset=utf-8;foo=bar")).isXML()).toBe(true);
+    assert.equal((new MIMEType("application/xml")).isXML(), true);
+    assert.equal((new MIMEType("application/xml;charset=utf-8")).isXML(), true);
+    assert.equal((new MIMEType("application/xml;charset=utf-8;foo=bar")).isXML(), true);
 
-    expect((new MIMEType("text/xml")).isXML()).toBe(true);
-    expect((new MIMEType("text/xml;charset=utf-8")).isXML()).toBe(true);
-    expect((new MIMEType("text/xml;charset=utf-8;foo=bar")).isXML()).toBe(true);
+    assert.equal((new MIMEType("text/xml")).isXML(), true);
+    assert.equal((new MIMEType("text/xml;charset=utf-8")).isXML(), true);
+    assert.equal((new MIMEType("text/xml;charset=utf-8;foo=bar")).isXML(), true);
 
-    expect((new MIMEType("text/svg+xml")).isXML()).toBe(true);
-    expect((new MIMEType("text/svg+xml;charset=utf-8")).isXML()).toBe(true);
-    expect((new MIMEType("text/svg+xml;charset=utf-8;foo=bar")).isXML()).toBe(true);
+    assert.equal((new MIMEType("text/svg+xml")).isXML(), true);
+    assert.equal((new MIMEType("text/svg+xml;charset=utf-8")).isXML(), true);
+    assert.equal((new MIMEType("text/svg+xml;charset=utf-8;foo=bar")).isXML(), true);
 
-    expect((new MIMEType("application/xhtml+xml")).isXML()).toBe(true);
-    expect((new MIMEType("application/xhtml+xml;charset=utf-8")).isXML()).toBe(true);
-    expect((new MIMEType("application/xhtml+xml;charset=utf-8;foo=bar")).isXML()).toBe(true);
+    assert.equal((new MIMEType("application/xhtml+xml")).isXML(), true);
+    assert.equal((new MIMEType("application/xhtml+xml;charset=utf-8")).isXML(), true);
+    assert.equal((new MIMEType("application/xhtml+xml;charset=utf-8;foo=bar")).isXML(), true);
 
-    expect((new MIMEType("text/xhtml")).isXML()).toBe(false);
-    expect((new MIMEType("text/svg")).isXML()).toBe(false);
-    expect((new MIMEType("application/html")).isXML()).toBe(false);
-    expect((new MIMEType("application/xml+xhtml")).isXML()).toBe(false);
+    assert.equal((new MIMEType("text/xhtml")).isXML(), false);
+    assert.equal((new MIMEType("text/svg")).isXML(), false);
+    assert.equal((new MIMEType("application/html")).isXML(), false);
+    assert.equal((new MIMEType("application/xml+xhtml")).isXML(), false);
   });
 
   test("isJavaScript", () => {
-    expect((new MIMEType("application/ecmascript")).isJavaScript()).toBe(true);
-    expect((new MIMEType("application/javascript")).isJavaScript()).toBe(true);
-    expect((new MIMEType("application/x-ecmascript")).isJavaScript()).toBe(true);
-    expect((new MIMEType("application/x-javascript")).isJavaScript()).toBe(true);
-    expect((new MIMEType("text/ecmascript")).isJavaScript()).toBe(true);
-    expect((new MIMEType("text/javascript1.0")).isJavaScript()).toBe(true);
-    expect((new MIMEType("text/javascript1.1")).isJavaScript()).toBe(true);
-    expect((new MIMEType("text/javascript1.2")).isJavaScript()).toBe(true);
-    expect((new MIMEType("text/javascript1.3")).isJavaScript()).toBe(true);
-    expect((new MIMEType("text/javascript1.4")).isJavaScript()).toBe(true);
-    expect((new MIMEType("text/javascript1.5")).isJavaScript()).toBe(true);
-    expect((new MIMEType("text/jscript")).isJavaScript()).toBe(true);
-    expect((new MIMEType("text/livescript")).isJavaScript()).toBe(true);
-    expect((new MIMEType("text/x-ecmascript")).isJavaScript()).toBe(true);
-    expect((new MIMEType("text/x-javascript")).isJavaScript()).toBe(true);
+    assert.equal((new MIMEType("application/ecmascript")).isJavaScript(), true);
+    assert.equal((new MIMEType("application/javascript")).isJavaScript(), true);
+    assert.equal((new MIMEType("application/x-ecmascript")).isJavaScript(), true);
+    assert.equal((new MIMEType("application/x-javascript")).isJavaScript(), true);
+    assert.equal((new MIMEType("text/ecmascript")).isJavaScript(), true);
+    assert.equal((new MIMEType("text/javascript1.0")).isJavaScript(), true);
+    assert.equal((new MIMEType("text/javascript1.1")).isJavaScript(), true);
+    assert.equal((new MIMEType("text/javascript1.2")).isJavaScript(), true);
+    assert.equal((new MIMEType("text/javascript1.3")).isJavaScript(), true);
+    assert.equal((new MIMEType("text/javascript1.4")).isJavaScript(), true);
+    assert.equal((new MIMEType("text/javascript1.5")).isJavaScript(), true);
+    assert.equal((new MIMEType("text/jscript")).isJavaScript(), true);
+    assert.equal((new MIMEType("text/livescript")).isJavaScript(), true);
+    assert.equal((new MIMEType("text/x-ecmascript")).isJavaScript(), true);
+    assert.equal((new MIMEType("text/x-javascript")).isJavaScript(), true);
 
-    expect((new MIMEType("text/javascript")).isJavaScript()).toBe(true);
+    assert.equal((new MIMEType("text/javascript")).isJavaScript(), true);
 
-    expect((new MIMEType("text/javascript;charset=utf-8")).isJavaScript()).toBe(true);
-    expect((new MIMEType("text/javascript;charset=utf-8")).isJavaScript({ prohibitParameters: true })).toBe(false);
-    expect((new MIMEType("text/javascript;charset=utf-8")).isJavaScript({})).toBe(true);
-    expect((new MIMEType("text/javascript;charset=utf-8")).isJavaScript({ prohibitParameters: true })).toBe(false);
+    assert.equal((new MIMEType("text/javascript;charset=utf-8")).isJavaScript(), true);
+    assert.equal((new MIMEType("text/javascript;charset=utf-8")).isJavaScript({ prohibitParameters: true }), false);
+    assert.equal((new MIMEType("text/javascript;charset=utf-8")).isJavaScript({}), true);
+    assert.equal((new MIMEType("text/javascript;charset=utf-8")).isJavaScript({ prohibitParameters: true }), false);
 
-    expect((new MIMEType("text/javascript;charset=utf-8;goal=script")).isJavaScript()).toBe(true);
-    expect((new MIMEType("text/javascript;charset=utf-8;goal=script")).isJavaScript({ prohibitParameters: true }))
-      .toBe(false);
+    assert.equal((new MIMEType("text/javascript;charset=utf-8;goal=script")).isJavaScript(), true);
+    assert.equal(
+      (new MIMEType("text/javascript;charset=utf-8;goal=script")).isJavaScript({ prohibitParameters: true }),
+      false
+    );
 
-    expect((new MIMEType("text/javascript;goal=module")).isJavaScript()).toBe(true);
-    expect((new MIMEType("text/javascript;goal=module")).isJavaScript({ prohibitParameters: true })).toBe(false);
+    assert.equal((new MIMEType("text/javascript;goal=module")).isJavaScript(), true);
+    assert.equal((new MIMEType("text/javascript;goal=module")).isJavaScript({ prohibitParameters: true }), false);
   });
 });

@@ -1,4 +1,6 @@
 "use strict";
+const { describe, test } = require("node:test");
+const assert = require("node:assert");
 const encodingLabelToName = require("whatwg-encoding").labelToName;
 const printableString = require("printable-string");
 const testCases = require("./web-platform-tests/mime-types.json");
@@ -21,26 +23,21 @@ function runTestCases(cases) {
       continue;
     }
 
-    const printableVersion = printableString(testCase.input);
-    const testName = printableVersion !== testCase.input ?
-      `${testCase.input} (${printableString(testCase.input)})` :
-      testCase.input;
-
-    test(testName, () => {
+    test(printableString(testCase.input), () => {
       const parsed = parse(testCase.input);
 
       if (testCase.output === null) {
-        expect(parsed).toEqual(null);
+        assert.equal(parsed, null);
       } else {
         const serialized = serialize(parsed);
-        expect(serialized).toEqual(testCase.output);
+        assert.equal(serialized, testCase.output);
 
         const charset = parsed.parameters.get("charset");
         const encoding = encodingLabelToName(charset);
         if (testCase.encoding !== null && testCase.encoding !== undefined) {
-          expect(encoding).toEqual(testCase.encoding);
+          assert.equal(encoding, testCase.encoding);
         } else {
-          expect(encoding).toEqual(null);
+          assert.equal(encoding, null);
         }
       }
     });
