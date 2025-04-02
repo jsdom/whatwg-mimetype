@@ -92,8 +92,8 @@ mimeType.parameters.set("@", "x");
 If you want primitives on which to build your own API, you can get direct access to the parsing and serialization algorithms as follows:
 
 ```js
-const parse = require("whatwg-mimetype/parser");
-const serialize = require("whatwg-mimetype/serialize");
+const parse = require("whatwg-mimetype/lib/parser");
+const serialize = require("whatwg-mimetype/lib/serializer");
 ```
 
 `parse(string)` returns an object containing the `type` and `subtype` strings, plus `parameters`, which is a `Map`. This is roughly our equivalent of the spec's [MIME type record](https://mimesniff.spec.whatwg.org/#mime-type). If parsing fails, it instead returns `null`.
