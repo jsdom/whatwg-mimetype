@@ -12,7 +12,7 @@
   "author": "Domenic Denicola <d@domenic.me> (https://domenic.me/)",
   "license": "MIT",
   "repository": "jsdom/whatwg-mimetype",
-  "main": "lib/mime-type.js",
+  "main": "lib/index.js",
   "files": [
     "lib/"
   ],
