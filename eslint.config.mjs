@@ -12,6 +12,13 @@ export default [
       globals: globals.node
     }
   },
+  {
+    files: ["**/*.mjs"],
+    languageOptions: {
+      sourceType: "module",
+      globals: globals.node
+    }
+  },
   ...domenicConfig,
   {
     files: ["scripts/**.js"],
