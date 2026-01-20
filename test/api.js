@@ -1,7 +1,7 @@
 "use strict";
 const { describe, it, test, beforeEach } = require("node:test");
 const assert = require("node:assert/strict");
-const MIMEType = require("..");
+const { MIMEType } = require("..");
 
 describe("Smoke tests via README intro example", () => {
   let mimeType;
