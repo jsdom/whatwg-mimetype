@@ -1,7 +1,7 @@
 "use strict";
 const { describe, test } = require("node:test");
 const assert = require("node:assert");
-const encodingLabelToName = require("whatwg-encoding").labelToName;
+const encodingLabelToName = require("@exodus/bytes/encoding.js").labelToName;
 const printableString = require("printable-string");
 const testCases = require("./web-platform-tests/mime-types.json");
 const generatedTestCases = require("./web-platform-tests/generated-mime-types.json");

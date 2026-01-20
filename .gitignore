@@ -2,4 +2,4 @@
 /npm-debug.log
 
 /coverage/
-/test/web-platform-tests/*
+/test/web-platform-tests/
