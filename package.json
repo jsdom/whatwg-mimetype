@@ -20,7 +20,7 @@
     "test": "node --test",
     "coverage": "c8 node --test --experimental-test-coverage",
     "lint": "eslint",
-    "pretest": "node scripts/get-latest-platform-tests.js"
+    "pretest": "node scripts/get-latest-platform-tests.mjs"
   },
   "devDependencies": {
     "@domenic/eslint-config": "^4.0.1",
