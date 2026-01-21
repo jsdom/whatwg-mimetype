@@ -11,7 +11,10 @@
   "version": "5.0.0",
   "author": "Domenic Denicola <d@domenic.me> (https://domenic.me/)",
   "license": "MIT",
-  "repository": "jsdom/whatwg-mimetype",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jsdom/whatwg-mimetype.git"
+  },
   "main": "lib/index.js",
   "files": [
     "lib/"
