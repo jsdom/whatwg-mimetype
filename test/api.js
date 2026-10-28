@@ -55,7 +55,7 @@ describe("MIMETypeParameters object", () => {
     assert.deepEqual(Array.from(mimeType.parameters.values()), ["utf-8", "bar"]);
     assert.deepEqual(Array.from(mimeType.parameters.entries()), [
       ["charset", "utf-8"],
-      ["foo", "bar"]
+      ["foo", "bar"],
     ]);
   });
 
@@ -83,7 +83,10 @@ describe("MIMETypeParameters object", () => {
       recordedThisArgs.push(this);
     }, thisArg);
 
-    assert.deepEqual(entries, [["charset", "utf-8"], ["foo", "bar"]]);
+    assert.deepEqual(entries, [
+      ["charset", "utf-8"],
+      ["foo", "bar"],
+    ]);
     assert.equal(recordedThisArgs.length, 2);
     assert.equal(recordedThisArgs[0], thisArg);
     assert.equal(recordedThisArgs[1], thisArg);
@@ -95,7 +98,7 @@ describe("Constructor behavior", () => {
     const arg = {
       toString() {
         return "text/HTML";
-      }
+      },
     };
     const mimeType = new MIMEType(arg);
 
@@ -113,7 +116,7 @@ describe("static parse() behavior", () => {
     const arg = {
       toString() {
         return "text/HTML";
-      }
+      },
     };
     const mimeType = MIMEType.parse(arg);
 
@@ -150,7 +153,7 @@ describe("type manipulation", () => {
     mimeType.type = {
       toString() {
         return "TeXT";
-      }
+      },
     };
     assert.equal(mimeType.type, "text");
     assert.equal(mimeType.essence, "text/xml");
@@ -195,7 +198,7 @@ describe("subtype manipulation", () => {
     mimeType.subtype = {
       toString() {
         return "PdF";
-      }
+      },
     };
     assert.equal(mimeType.subtype, "pdf");
     assert.equal(mimeType.essence, "application/pdf");
@@ -218,77 +221,106 @@ describe("subtype manipulation", () => {
 
 describe("Group-testing functions", () => {
   test("isHTML", () => {
-    assert.equal((new MIMEType("text/html")).isHTML(), true);
-    assert.equal((new MIMEType("text/html;charset=utf-8")).isHTML(), true);
-    assert.equal((new MIMEType("text/html;charset=utf-8;foo=bar")).isHTML(), true);
+    assert.equal(new MIMEType("text/html").isHTML(), true);
+    assert.equal(new MIMEType("text/html;charset=utf-8").isHTML(), true);
+    assert.equal(new MIMEType("text/html;charset=utf-8;foo=bar").isHTML(), true);
 
-    assert.equal((new MIMEType("text/xhtml")).isHTML(), false);
-    assert.equal((new MIMEType("application/html")).isHTML(), false);
-    assert.equal((new MIMEType("application/xhtml+xml")).isHTML(), false);
+    assert.equal(new MIMEType("text/xhtml").isHTML(), false);
+    assert.equal(new MIMEType("application/html").isHTML(), false);
+    assert.equal(new MIMEType("application/xhtml+xml").isHTML(), false);
   });
 
   test("isXML", () => {
-    assert.equal((new MIMEType("application/xml")).isXML(), true);
-    assert.equal((new MIMEType("application/xml;charset=utf-8")).isXML(), true);
-    assert.equal((new MIMEType("application/xml;charset=utf-8;foo=bar")).isXML(), true);
+    assert.equal(new MIMEType("application/xml").isXML(), true);
+    assert.equal(new MIMEType("application/xml;charset=utf-8").isXML(), true);
+    assert.equal(new MIMEType("application/xml;charset=utf-8;foo=bar").isXML(), true);
 
-    assert.equal((new MIMEType("text/xml")).isXML(), true);
-    assert.equal((new MIMEType("text/xml;charset=utf-8")).isXML(), true);
-    assert.equal((new MIMEType("text/xml;charset=utf-8;foo=bar")).isXML(), true);
+    assert.equal(new MIMEType("text/xml").isXML(), true);
+    assert.equal(new MIMEType("text/xml;charset=utf-8").isXML(), true);
+    assert.equal(new MIMEType("text/xml;charset=utf-8;foo=bar").isXML(), true);
 
-    assert.equal((new MIMEType("text/svg+xml")).isXML(), true);
-    assert.equal((new MIMEType("text/svg+xml;charset=utf-8")).isXML(), true);
-    assert.equal((new MIMEType("text/svg+xml;charset=utf-8;foo=bar")).isXML(), true);
+    assert.equal(new MIMEType("text/svg+xml").isXML(), true);
+    assert.equal(new MIMEType("text/svg+xml;charset=utf-8").isXML(), true);
+    assert.equal(new MIMEType("text/svg+xml;charset=utf-8;foo=bar").isXML(), true);
 
-    assert.equal((new MIMEType("application/xhtml+xml")).isXML(), true);
-    assert.equal((new MIMEType("application/xhtml+xml;charset=utf-8")).isXML(), true);
-    assert.equal((new MIMEType("application/xhtml+xml;charset=utf-8;foo=bar")).isXML(), true);
+    assert.equal(new MIMEType("application/xhtml+xml").isXML(), true);
+    assert.equal(new MIMEType("application/xhtml+xml;charset=utf-8").isXML(), true);
+    assert.equal(new MIMEType("application/xhtml+xml;charset=utf-8;foo=bar").isXML(), true);
 
-    assert.equal((new MIMEType("text/xhtml")).isXML(), false);
-    assert.equal((new MIMEType("text/svg")).isXML(), false);
-    assert.equal((new MIMEType("application/html")).isXML(), false);
-    assert.equal((new MIMEType("application/xml+xhtml")).isXML(), false);
+    assert.equal(new MIMEType("text/xhtml").isXML(), false);
+    assert.equal(new MIMEType("text/svg").isXML(), false);
+    assert.equal(new MIMEType("application/html").isXML(), false);
+    assert.equal(new MIMEType("application/xml+xhtml").isXML(), false);
   });
 
   test("isJavaScript", () => {
     for (const prohibitParameters of [false, true]) {
-      assert.equal((new MIMEType("application/ecmascript")).isJavaScript({ prohibitParameters }), true);
-      assert.equal((new MIMEType("application/javascript")).isJavaScript({ prohibitParameters }), true);
-      assert.equal((new MIMEType("application/x-ecmascript")).isJavaScript({ prohibitParameters }), true);
-      assert.equal((new MIMEType("application/x-javascript")).isJavaScript({ prohibitParameters }), true);
-      assert.equal((new MIMEType("text/ecmascript")).isJavaScript({ prohibitParameters }), true);
-      assert.equal((new MIMEType("text/javascript1.0")).isJavaScript({ prohibitParameters }), true);
-      assert.equal((new MIMEType("text/javascript1.1")).isJavaScript({ prohibitParameters }), true);
-      assert.equal((new MIMEType("text/javascript1.2")).isJavaScript({ prohibitParameters }), true);
-      assert.equal((new MIMEType("text/javascript1.3")).isJavaScript({ prohibitParameters }), true);
-      assert.equal((new MIMEType("text/javascript1.4")).isJavaScript({ prohibitParameters }), true);
-      assert.equal((new MIMEType("text/javascript1.5")).isJavaScript({ prohibitParameters }), true);
-      assert.equal((new MIMEType("text/jscript")).isJavaScript({ prohibitParameters }), true);
-      assert.equal((new MIMEType("text/livescript")).isJavaScript({ prohibitParameters }), true);
-      assert.equal((new MIMEType("text/x-ecmascript")).isJavaScript({ prohibitParameters }), true);
-      assert.equal((new MIMEType("text/x-javascript")).isJavaScript({ prohibitParameters }), true);
-      assert.equal((new MIMEType("text/javascript")).isJavaScript({ prohibitParameters }), true);
+      assert.equal(
+        new MIMEType("application/ecmascript").isJavaScript({ prohibitParameters }),
+        true,
+      );
+      assert.equal(
+        new MIMEType("application/javascript").isJavaScript({ prohibitParameters }),
+        true,
+      );
+      assert.equal(
+        new MIMEType("application/x-ecmascript").isJavaScript({ prohibitParameters }),
+        true,
+      );
+      assert.equal(
+        new MIMEType("application/x-javascript").isJavaScript({ prohibitParameters }),
+        true,
+      );
+      assert.equal(new MIMEType("text/ecmascript").isJavaScript({ prohibitParameters }), true);
+      assert.equal(new MIMEType("text/javascript1.0").isJavaScript({ prohibitParameters }), true);
+      assert.equal(new MIMEType("text/javascript1.1").isJavaScript({ prohibitParameters }), true);
+      assert.equal(new MIMEType("text/javascript1.2").isJavaScript({ prohibitParameters }), true);
+      assert.equal(new MIMEType("text/javascript1.3").isJavaScript({ prohibitParameters }), true);
+      assert.equal(new MIMEType("text/javascript1.4").isJavaScript({ prohibitParameters }), true);
+      assert.equal(new MIMEType("text/javascript1.5").isJavaScript({ prohibitParameters }), true);
+      assert.equal(new MIMEType("text/jscript").isJavaScript({ prohibitParameters }), true);
+      assert.equal(new MIMEType("text/livescript").isJavaScript({ prohibitParameters }), true);
+      assert.equal(new MIMEType("text/x-ecmascript").isJavaScript({ prohibitParameters }), true);
+      assert.equal(new MIMEType("text/x-javascript").isJavaScript({ prohibitParameters }), true);
+      assert.equal(new MIMEType("text/javascript").isJavaScript({ prohibitParameters }), true);
 
-      assert.equal((new MIMEType("text/plain")).isJavaScript({ prohibitParameters }), false);
-      assert.equal((new MIMEType("application/xhtml+xml")).isJavaScript({ prohibitParameters }), false);
-      assert.equal((new MIMEType("video/javascript")).isJavaScript({ prohibitParameters }), false);
+      assert.equal(new MIMEType("text/plain").isJavaScript({ prohibitParameters }), false);
+      assert.equal(
+        new MIMEType("application/xhtml+xml").isJavaScript({ prohibitParameters }),
+        false,
+      );
+      assert.equal(new MIMEType("video/javascript").isJavaScript({ prohibitParameters }), false);
     }
 
-    assert.equal((new MIMEType("text/plain;charset=utf-8")).isJavaScript(), false);
-    assert.equal((new MIMEType("text/plain;charset=utf-8")).isJavaScript({ prohibitParameters: true }), false);
-
-    assert.equal((new MIMEType("text/javascript;charset=utf-8")).isJavaScript(), true);
-    assert.equal((new MIMEType("text/javascript;charset=utf-8")).isJavaScript({ prohibitParameters: true }), false);
-    assert.equal((new MIMEType("text/javascript;charset=utf-8")).isJavaScript({}), true);
-    assert.equal((new MIMEType("text/javascript;charset=utf-8")).isJavaScript({ prohibitParameters: true }), false);
-
-    assert.equal((new MIMEType("text/javascript;charset=utf-8;goal=script")).isJavaScript(), true);
+    assert.equal(new MIMEType("text/plain;charset=utf-8").isJavaScript(), false);
     assert.equal(
-      (new MIMEType("text/javascript;charset=utf-8;goal=script")).isJavaScript({ prohibitParameters: true }),
-      false
+      new MIMEType("text/plain;charset=utf-8").isJavaScript({ prohibitParameters: true }),
+      false,
     );
 
-    assert.equal((new MIMEType("text/javascript;goal=module")).isJavaScript(), true);
-    assert.equal((new MIMEType("text/javascript;goal=module")).isJavaScript({ prohibitParameters: true }), false);
+    assert.equal(new MIMEType("text/javascript;charset=utf-8").isJavaScript(), true);
+    assert.equal(
+      new MIMEType("text/javascript;charset=utf-8").isJavaScript({ prohibitParameters: true }),
+      false,
+    );
+    assert.equal(new MIMEType("text/javascript;charset=utf-8").isJavaScript({}), true);
+    assert.equal(
+      new MIMEType("text/javascript;charset=utf-8").isJavaScript({ prohibitParameters: true }),
+      false,
+    );
+
+    assert.equal(new MIMEType("text/javascript;charset=utf-8;goal=script").isJavaScript(), true);
+    assert.equal(
+      new MIMEType("text/javascript;charset=utf-8;goal=script").isJavaScript({
+        prohibitParameters: true,
+      }),
+      false,
+    );
+
+    assert.equal(new MIMEType("text/javascript;goal=module").isJavaScript(), true);
+    assert.equal(
+      new MIMEType("text/javascript;goal=module").isJavaScript({ prohibitParameters: true }),
+      false,
+    );
   });
 });

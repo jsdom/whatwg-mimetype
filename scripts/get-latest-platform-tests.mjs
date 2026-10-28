@@ -1,5 +1,5 @@
-import path from "node:path";
 import fs from "node:fs/promises";
+import path from "node:path";
 
 if (process.env.NO_UPDATE) {
   process.exit(0);
@@ -13,14 +13,15 @@ if (process.env.NO_UPDATE) {
 // 3. Copy the commit hash
 const commitHash = "2dc0ad4f330f0b5647d11b00ae7437b668cb8df3";
 
-const urlPrefix = `https://raw.githubusercontent.com/web-platform-tests/wpt/${commitHash}` +
-                  `/mimesniff/mime-types/resources/`;
+const urlPrefix = `https://raw.githubusercontent.com/web-platform-tests/wpt/${commitHash}/mimesniff/mime-types/resources/`;
 
 const files = ["mime-types.json", "generated-mime-types.json"];
 
-await Promise.all(files.map(async file => {
-  const url = urlPrefix + file;
-  const targetFile = path.resolve(import.meta.dirname, "..", "test", "web-platform-tests", file);
-  const res = await fetch(url);
-  await fs.writeFile(targetFile, res.body);
-}));
+await Promise.all(
+  files.map(async (file) => {
+    const url = urlPrefix + file;
+    const targetFile = path.resolve(import.meta.dirname, "..", "test", "web-platform-tests", file);
+    const res = await fetch(url);
+    await fs.writeFile(targetFile, res.body);
+  }),
+);
