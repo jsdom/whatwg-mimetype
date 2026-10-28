@@ -27,18 +27,18 @@ It can also [determine the MIME type of a resource](https://mimesniff.spec.whatw
 ```js
 const { computedMIMEType } = require("whatwg-mimetype");
 
-const pngBytes = new Uint8Array([0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A]);
+const pngBytes = new Uint8Array([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
 
-computedMIMEType(pngBytes).essence;                                    // "image/png"
-computedMIMEType(pngBytes, { contentTypeHeader: "image/gif" }).essence // "image/png"
-computedMIMEType(pngBytes, { contentTypeHeader: "text/html" }).essence // "text/html"
+computedMIMEType(pngBytes).essence; // "image/png"
+computedMIMEType(pngBytes, { contentTypeHeader: "image/gif" }).essence; // "image/png"
+computedMIMEType(pngBytes, { contentTypeHeader: "text/html" }).essence; // "text/html"
 ```
 
 Parsing, serialization, and sniffing are all fairly complex processes; see the specification for more details:
 
-* [parsing](https://mimesniff.spec.whatwg.org/#parsing-a-mime-type)
-* [serialization](https://mimesniff.spec.whatwg.org/#serializing-a-mime-type)
-* [sniffing](https://mimesniff.spec.whatwg.org/#determining-the-computed-mime-type-of-a-resource)
+- [parsing](https://mimesniff.spec.whatwg.org/#parsing-a-mime-type)
+- [serialization](https://mimesniff.spec.whatwg.org/#serializing-a-mime-type)
+- [sniffing](https://mimesniff.spec.whatwg.org/#determining-the-computed-mime-type-of-a-resource)
 
 This package's algorithms conform to those of the WHATWG [MIME Sniffing Standard](https://mimesniff.spec.whatwg.org/), as of [commit `e7594d5`](https://github.com/whatwg/mimesniff/commit/e7594d531819053508447f688a3bde465531aca5).
 
@@ -54,10 +54,10 @@ As an alternative to the constructor, you can use `MIMEType.parse(string)`. The 
 
 #### Properties
 
-* `type`: the MIME type's [type](https://mimesniff.spec.whatwg.org/#mime-type-type), e.g. `"text"`
-* `subtype`: the MIME type's [subtype](https://mimesniff.spec.whatwg.org/#mime-type-subtype), e.g. `"html"`
-* `essence`: the MIME type's [essence](https://mimesniff.spec.whatwg.org/#mime-type-essence), e.g. `"text/html"`
-* `parameters`: an instance of `MIMETypeParameters`, containing this MIME type's [parameters](https://mimesniff.spec.whatwg.org/#mime-type-parameters)
+- `type`: the MIME type's [type](https://mimesniff.spec.whatwg.org/#mime-type-type), e.g. `"text"`
+- `subtype`: the MIME type's [subtype](https://mimesniff.spec.whatwg.org/#mime-type-subtype), e.g. `"html"`
+- `essence`: the MIME type's [essence](https://mimesniff.spec.whatwg.org/#mime-type-essence), e.g. `"text/html"`
+- `parameters`: an instance of `MIMETypeParameters`, containing this MIME type's [parameters](https://mimesniff.spec.whatwg.org/#mime-type-parameters)
 
 `type` and `subtype` can be changed. They will be validated to be non-empty and only contain [HTTP token code points](https://mimesniff.spec.whatwg.org/#http-token-code-point).
 
@@ -67,10 +67,10 @@ As an alternative to the constructor, you can use `MIMEType.parse(string)`. The 
 
 #### Methods
 
-* `toString()` serializes the MIME type to a string
-* `isHTML()`: returns true if this instance represents [a HTML MIME type](https://mimesniff.spec.whatwg.org/#html-mime-type)
-* `isXML()`: returns true if this instance represents [an XML MIME type](https://mimesniff.spec.whatwg.org/#xml-mime-type)
-* `isJavaScript({ prohibitParameters })`: returns true if this instance represents [a JavaScript MIME type](https://html.spec.whatwg.org/multipage/scripting.html#javascript-mime-type). `prohibitParameters` can be set to true to disallow any parameters, i.e. to test if the MIME type's serialization is a [JavaScript MIME type essence match](https://mimesniff.spec.whatwg.org/#javascript-mime-type-essence-match).
+- `toString()` serializes the MIME type to a string
+- `isHTML()`: returns true if this instance represents [a HTML MIME type](https://mimesniff.spec.whatwg.org/#html-mime-type)
+- `isXML()`: returns true if this instance represents [an XML MIME type](https://mimesniff.spec.whatwg.org/#xml-mime-type)
+- `isJavaScript({ prohibitParameters })`: returns true if this instance represents [a JavaScript MIME type](https://html.spec.whatwg.org/multipage/scripting.html#javascript-mime-type). `prohibitParameters` can be set to true to disallow any parameters, i.e. to test if the MIME type's serialization is a [JavaScript MIME type essence match](https://mimesniff.spec.whatwg.org/#javascript-mime-type-essence-match).
 
 _Note: the `isHTML()`, `isXML()`, and `isJavaScript()` methods are speculative, and may be removed or changed in future major versions. See [whatwg/mimesniff#48](https://github.com/whatwg/mimesniff/issues/48) for brainstorming in this area. Currently we implement these mainly because they are useful in jsdom._
 
@@ -111,19 +111,19 @@ mimeType.parameters.set("@", "x");
 
 The `computedMIMEType(resource, options)` function determines a resource's MIME type using the full [MIME type sniffing algorithm](https://mimesniff.spec.whatwg.org/#determining-the-computed-mime-type-of-a-resource). This includes:
 
-* complexities around how the supplied `Content-Type` header or other external information interacts with (but usually does not override) the sniffing process;
-* the ability to set a "no-sniff" flag, like the one used when `X-Content-Type-Options: nosniff` is present, which mostly (but not entirely) prevents sniffing; and
-* the "Apache bug" check which occurs when the `Content-Type` header is one of several specific values.
+- complexities around how the supplied `Content-Type` header or other external information interacts with (but usually does not override) the sniffing process;
+- the ability to set a "no-sniff" flag, like the one used when `X-Content-Type-Options: nosniff` is present, which mostly (but not entirely) prevents sniffing; and
+- the "Apache bug" check which occurs when the `Content-Type` header is one of several specific values.
 
 That is, this doesn't just implement the [rules for identifying an unknown MIME type](https://mimesniff.spec.whatwg.org/#rules-for-identifying-an-unknown-mime-type). It gives you everything you need for a full browser-compatible MIME sniffing procedure.
 
 #### Arguments
 
-* **`resource`** (`Uint8Array`): The resource bytes.
-* **`options.contentTypeHeader`** (`string`): The Content-Type header value, for HTTP resources.
-* **`options.providedType`** (`string`): The MIME type from the filesystem or another protocol (like FTP), for non-HTTP resources.
-* **`options.noSniff`** (`boolean`, default `false`): Whether the `X-Content-Type-Options: nosniff` header was present.
-* **`options.isSupported`** (`function`, default `() => true`): A predicate called with a `MIMEType` instance to check if an image/audio/video MIME type is supported by the user agent. If it returns `false`, sniffing is skipped for that type.
+- **`resource`** (`Uint8Array`): The resource bytes.
+- **`options.contentTypeHeader`** (`string`): The Content-Type header value, for HTTP resources.
+- **`options.providedType`** (`string`): The MIME type from the filesystem or another protocol (like FTP), for non-HTTP resources.
+- **`options.noSniff`** (`boolean`, default `false`): Whether the `X-Content-Type-Options: nosniff` header was present.
+- **`options.isSupported`** (`function`, default `() => true`): A predicate called with a `MIMEType` instance to check if an image/audio/video MIME type is supported by the user agent. If it returns `false`, sniffing is skipped for that type.
 
 The `contentTypeHeader` and `providedType` options will be stringified, so you could also supply a `MIMEType` (or a [Node.js `util` module `MIMEType`](https://nodejs.org/api/util.html#class-utilmimetype)).
 
