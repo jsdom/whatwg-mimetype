@@ -6,6 +6,8 @@ export default [
   {
     ignores: ["coverage/"],
   },
+  ...domenicConfig,
+  ...domenicStylisticConfig,
   {
     files: ["**/*.js"],
     languageOptions: {
@@ -16,16 +18,7 @@ export default [
   {
     files: ["**/*.mjs"],
     languageOptions: {
-      sourceType: "module",
-      globals: globals.node,
-    },
-  },
-  ...domenicConfig,
-  ...domenicStylisticConfig,
-  {
-    files: ["scripts/**.js"],
-    rules: {
-      "no-console": "off",
+      globals: globals.nodeBuiltin,
     },
   },
 ];
