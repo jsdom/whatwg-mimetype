@@ -14,14 +14,18 @@ if (process.env.NO_UPDATE) {
 const commitHash = "2dc0ad4f330f0b5647d11b00ae7437b668cb8df3";
 
 const urlPrefix = `https://raw.githubusercontent.com/web-platform-tests/wpt/${commitHash}/mimesniff/mime-types/resources/`;
+const targetDir = path.resolve(import.meta.dirname, "..", "test", "web-platform-tests");
 
 const files = ["mime-types.json", "generated-mime-types.json"];
 
+await fs.mkdir(targetDir, { recursive: true });
 await Promise.all(
   files.map(async (file) => {
     const url = urlPrefix + file;
-    const targetFile = path.resolve(import.meta.dirname, "..", "test", "web-platform-tests", file);
     const res = await fetch(url);
-    await fs.writeFile(targetFile, res.body);
+    if (!res.ok) {
+      throw new Error(`Failed to fetch ${res.url}: ${res.status}`);
+    }
+    await fs.writeFile(path.resolve(targetDir, file), res.body);
   }),
 );
